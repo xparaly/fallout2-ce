@@ -248,6 +248,72 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/worldmap.h"
     "src/xfile.cc"
     "src/xfile.h"
+
+    #    "src/sfall/FalloutEngine/AsmMacros.h"
+#    "src/sfall/FalloutEngine/Fallout2.h"
+
+    "src/sfall/FalloutEngine/Functions.cpp"
+    "src/sfall/FalloutEngine/Functions.h"
+
+    "src/sfall/FalloutEngine/FunctionOffsets.cpp"
+    "src/sfall/FalloutEngine/FunctionOffsets.h"
+    "src/sfall/FalloutEngine/FunctionOffsets_def.h"
+    "src/sfall/FalloutEngine/VariableOffsets.h"
+    "src/sfall/FalloutEngine/Variables.cpp"
+    "src/sfall/FalloutEngine/Variables.h"
+    "src/sfall/FalloutEngine/Variables_def.h"
+
+    "src/sfall/Modules/HookScripts/CombatHs.cpp"
+    "src/sfall/Modules/HookScripts/CombatHs.h"
+    "src/sfall/Modules/HookScripts/Common.cpp"
+    "src/sfall/Modules/HookScripts/Common.h"
+    "src/sfall/Modules/HookScripts/DeathHs.cpp"
+    "src/sfall/Modules/HookScripts/DeathHs.h"
+    "src/sfall/Modules/HookScripts/HexBlockingHs.cpp"
+    "src/sfall/Modules/HookScripts/HexBlockingHs.h"
+    "src/sfall/Modules/HookScripts/InventoryHs.cpp"
+    "src/sfall/Modules/HookScripts/InventoryHs.h"
+    "src/sfall/Modules/HookScripts/InventoryHs.cpp"
+    "src/sfall/Modules/HookScripts/InventoryHs.h"
+    "src/sfall/Modules/HookScripts/InventoryHs.cpp"
+    "src/sfall/Modules/HookScripts/InventoryHs.h"
+    "src/sfall/Modules/HookScripts/MiscHs.cpp"
+    "src/sfall/Modules/HookScripts/MiscHs.h"
+    "src/sfall/Modules/HookScripts/ObjectHs.cpp"
+    "src/sfall/Modules/HookScripts/ObjectHs.h"
+#    "src/sfall/Modules/HookScripts/SoundHs.cpp"
+ #   "src/sfall/Modules/HookScripts/SoundHs.h"
+
+#    "src/sfall/Modules/CritterPoison.cpp"
+#    "src/sfall/Modules/CritterPoison.h"
+
+    "src/sfall/Modules/HookScripts.cpp"
+    "src/sfall/Modules/HookScripts.h"
+#    "src/sfall/Modules/Karma.cpp"
+#    "src/sfall/Modules/Karma.h"
+
+    "src/sfall/Modules/LoadGameHook.cpp"
+    "src/sfall/Modules/LoadGameHook.h"
+    "src/sfall/Modules/MainLoopHook.cpp"
+    "src/sfall/Modules/MainLoopHook.h"
+    "src/sfall/Modules/Module.h"
+
+#    "src/sfall/Modules/PartyControl.cpp"
+#    "src/sfall/Modules/PartyControl.h"
+
+    "src/sfall/Modules/ScriptExtender.cpp"
+    "src/sfall/Modules/ScriptExtender.h"
+
+#    "src/sfall/CheckAddress.cpp"
+#    "src/sfall/CheckAddress.h"
+
+    "src/sfall/Delegate.h"
+    "src/to_move_somewhere_else.h"
+#    "src/sfall/InputFuncs.cpp"
+#    "src/sfall/InputFuncs.h"
+
+ #   "src/sfall/SafeWrite.cpp"
+ #   "src/sfall/SafeWrite.h"
 )
 
 target_sources(${EXECUTABLE_NAME} PUBLIC
@@ -286,6 +352,76 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/touch.cc"
     "src/touch.h"
 )
+
+#[[target_sources(${EXECUTABLE_NAME} PUBLIC
+#    "src/sfall/FalloutEngine/AsmMacros.h"
+#    "src/sfall/FalloutEngine/Fallout2.h"
+
+    "src/sfall/FalloutEngine/Functions.cpp"
+    "src/sfall/FalloutEngine/Functions.h"
+
+    "src/sfall/FalloutEngine/FunctionOffsets.cpp"
+    "src/sfall/FalloutEngine/FunctionOffsets.h"
+    "src/sfall/FalloutEngine/FunctionOffsets_def.h"
+    "src/sfall/FalloutEngine/VariableOffsets.h"
+    "src/sfall/FalloutEngine/Variables.cpp"
+    "src/sfall/FalloutEngine/Variables.h"
+    "src/sfall/FalloutEngine/Variables_def.h"
+
+    "src/sfall/Modules/HookScripts/CombatHs.cpp"
+    "src/sfall/Modules/HookScripts/CombatHs.h"
+    "src/sfall/Modules/HookScripts/Common.cpp"
+    "src/sfall/Modules/HookScripts/Common.h"
+    "src/sfall/Modules/HookScripts/DeathHs.cpp"
+    "src/sfall/Modules/HookScripts/DeathHs.h"
+    "src/sfall/Modules/HookScripts/HexBlockingHs.cpp"
+    "src/sfall/Modules/HookScripts/HexBlockingHs.h"
+    "src/sfall/Modules/HookScripts/InventoryHs.cpp"
+    "src/sfall/Modules/HookScripts/InventoryHs.h"
+    "src/sfall/Modules/HookScripts/InventoryHs.cpp"
+    "src/sfall/Modules/HookScripts/InventoryHs.h"
+    "src/sfall/Modules/HookScripts/InventoryHs.cpp"
+    "src/sfall/Modules/HookScripts/InventoryHs.h"
+    "src/sfall/Modules/HookScripts/MiscHs.cpp"
+    "src/sfall/Modules/HookScripts/MiscHs.h"
+    "src/sfall/Modules/HookScripts/ObjectHs.cpp"
+    "src/sfall/Modules/HookScripts/ObjectHs.h"
+#    "src/sfall/Modules/HookScripts/SoundHs.cpp"
+ #   "src/sfall/Modules/HookScripts/SoundHs.h"
+
+#    "src/sfall/Modules/CritterPoison.cpp"
+#    "src/sfall/Modules/CritterPoison.h"
+
+    "src/sfall/Modules/HookScripts.cpp"
+    "src/sfall/Modules/HookScripts.h"
+#    "src/sfall/Modules/Karma.cpp"
+#    "src/sfall/Modules/Karma.h"
+
+    "src/sfall/Modules/LoadGameHook.cpp"
+    "src/sfall/Modules/LoadGameHook.h"
+    "src/sfall/Modules/MainLoopHook.cpp"
+    "src/sfall/Modules/MainLoopHook.h"
+    "src/sfall/Modules/Module.h"
+
+#    "src/sfall/Modules/PartyControl.cpp"
+#    "src/sfall/Modules/PartyControl.h"
+
+    "src/sfall/Modules/ScriptExtender.cpp"
+    "src/sfall/Modules/ScriptExtender.h"
+
+#    "src/sfall/CheckAddress.cpp"
+#    "src/sfall/CheckAddress.h"
+
+    "src/sfall/Delegate.h"
+    "src/to_move_somewhere_else.h"
+#    "src/sfall/InputFuncs.cpp"
+#    "src/sfall/InputFuncs.h"
+
+ #   "src/sfall/SafeWrite.cpp"
+ #   "src/sfall/SafeWrite.h"
+)]]
+
+
 
 if(IOS)
     target_sources(${EXECUTABLE_NAME} PUBLIC
