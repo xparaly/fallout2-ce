@@ -1080,6 +1080,7 @@ void sfallOpcodesInit()
     interpreterRegisterOpcode(0x81B6, op_set_car_current_town);
     interpreterRegisterOpcode(0x81DF, op_get_bodypart_hit_modifier);
     interpreterRegisterOpcode(0x81E0, op_set_bodypart_hit_modifier);
+    //interpreterRegisterOpcode(0x81E4, op_get_sfall_arg); 
     interpreterRegisterOpcode(0x81EB, op_get_ini_string);
     interpreterRegisterOpcode(0x81EC, op_sqrt);
     interpreterRegisterOpcode(0x81ED, op_abs);
@@ -1118,6 +1119,7 @@ void sfallOpcodesInit()
     interpreterRegisterOpcode(0x8237, opParseInt);
     interpreterRegisterOpcode(0x8238, op_atof);
     interpreterRegisterOpcode(0x8239, opScanArray);
+    //interpreterRegisterOpcode(0x823C, op_get_sfall_args);
     interpreterRegisterOpcode(0x824B, op_tile_under_cursor);
     interpreterRegisterOpcode(0x824E, opSubstr);
     interpreterRegisterOpcode(0x824F, opGetStringLength);
@@ -1140,6 +1142,7 @@ void sfallOpcodesInit()
     interpreterRegisterOpcode(0x827A, op_sfall_func4);
     interpreterRegisterOpcode(0x827B, op_sfall_func5);
     interpreterRegisterOpcode(0x827C, op_sfall_func6);
+    interpreterRegisterOpcode(0x827D, op_register_hook);
     interpreterRegisterOpcode(0x827F, op_div);
 }
 
