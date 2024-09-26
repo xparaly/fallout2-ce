@@ -3,6 +3,7 @@
 
 //#include <string>
 //#include <algorithm>
+#include <Windows.h>
 
 // global flag, indicating that debugging features of Sfall are enabled
 #ifndef NO_SFALL_DEBUG
@@ -11,9 +12,10 @@
     #define isDebug false
 #endif
 
-#define min(a, b) (((a) < (b)) ? (a) : (b))
+//#define min(a, b) (((a) < (b)) ? (a) : (b))
 
 namespace fallout {
+//    typedef unsigned long DWORD;
 }
 
 namespace sfall {
@@ -74,7 +76,7 @@ namespace Fields {
 
 } // namespace Fields
 
-typedef unsigned long DWORD;
+
 
 
 //enum class DataType : DWORD {

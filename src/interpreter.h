@@ -3,7 +3,7 @@
 
 #include "object.h"
 #include <setjmp.h>
-
+#include "to_move_somewhere_else.h"
 #include <vector>
 
 namespace fallout {
@@ -146,6 +146,7 @@ public:
     ProgramValue();
     ProgramValue(int value);
     ProgramValue(Object* value);
+    ProgramValue(DWORD value);
 
     opcode_t opcode;
     union {
@@ -161,6 +162,7 @@ public:
     float asFloat() const;
     bool isPointer() const;
     int asInt() const;
+    DWORD asRawValue() const;
 };
 
 typedef std::vector<ProgramValue> ProgramStack;

@@ -176,6 +176,10 @@ Object* scriptGetSelf(Program* s);
 int scriptSetObjects(int sid, Object* source, Object* target);
 void scriptSetFixedParam(int a1, int a2);
 int scriptSetActionBeingUsed(int sid, int a2);
+
+Program* scriptsCreateProgramByName(const char* name);
+
+
 void _scrSetQueueTestVals(Object* a1, int a2);
 int _scrQueueRemoveFixed(Object* obj, void* data);
 int scriptAddTimerEvent(int sid, int delay, int param);

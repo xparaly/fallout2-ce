@@ -16,6 +16,7 @@
 #include "platform_compat.h"
 #include "sfall_global_scripts.h"
 #include "svga.h"
+#include "to_move_somewhere_else.h"
 
 namespace fallout {
 
@@ -3332,6 +3333,11 @@ ProgramValue::ProgramValue(Object* value)
     opcode = VALUE_TYPE_PTR;
     pointerValue = value;
 };
+ProgramValue::ProgramValue(DWORD value)
+{
+    opcode = VALUE_TYPE_INT;
+    integerValue = value;
+}
 
 bool ProgramValue::isPointer() const
 {
@@ -3345,6 +3351,18 @@ int ProgramValue::asInt() const
         return integerValue;
     case VALUE_TYPE_FLOAT:
         return static_cast<int>(floatValue);
+    default:
+        return 0;
+    }
+}
+
+DWORD ProgramValue::asRawValue() const
+{
+    switch (opcode) {
+    case VALUE_TYPE_INT:
+        return static_cast<DWORD>(integerValue); // probably unsafe
+    case VALUE_TYPE_FLOAT:
+        return static_cast<DWORD>(floatValue); // probably unsafe
     default:
         return 0;
     }

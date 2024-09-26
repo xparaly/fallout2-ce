@@ -30,7 +30,7 @@ static DWORD callDepth;
 static DWORD currentRunHook = -1;
 
 bool allowNonIntReturn;
-DataType retTypes[maxRets]; // current hook return value types
+fallout::opcode_t retTypes[maxRets]; // current hook return value types
 DWORD args[maxArgs]; // current hook arguments
 DWORD rets[maxRets]; // current hook return values
 
@@ -45,27 +45,29 @@ DWORD HookCommon::GetHSArgCount() {
 	return argCount;
 }
 
-ScriptValue HookCommon::GetHSArg() {
+fallout::ProgramValue HookCommon::GetHSArg() {
 	return (cArg == argCount) ? 0 : GetHSArgAt(cArg++);
 }
 
-void HookCommon::SetHSArg(DWORD id, const ScriptValue& value) {
+void HookCommon::SetHSArg(DWORD id, const fallout::ProgramValue& value) {
 	if (id < argCount) {
-		args[id] = value.rawValue();
+        args[id] = value.asRawValue();
 	}
 }
 
-ScriptValue HookCommon::GetHSArgAt(DWORD id) {
+fallout::ProgramValue HookCommon::GetHSArgAt(DWORD id)
+{
 	return args[id];
 }
 
-void HookCommon::SetHSReturn(const ScriptValue& value) {
+void HookCommon::SetHSReturn(const fallout::ProgramValue& value)
+{
 	// For backward compatibility - ignore non-int return values
 	if (!allowNonIntReturn && !value.isInt()) return;
 
 	if (cRetTmp < maxRets) {
-		retTypes[cRetTmp] = value.type();
-		rets[cRetTmp++] = value.rawValue();
+		retTypes[cRetTmp] = value.opcode;
+		rets[cRetTmp++] = value.asRawValue();
 	}
 	if (cRetTmp > cRet) {
 		cRet = cRetTmp;

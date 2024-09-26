@@ -46,6 +46,7 @@
 #include "debug.h"
 #include "..\SafeWrite.h"
 #include "..\..\queue.h"
+#include "..\..\scripts.h"
 
 namespace sfall
 {
@@ -431,43 +432,43 @@ using namespace script;
 //		selfOverrideMap.erase(it);
 //	}
 //}
-//
-//// loads script from .int file into a ScriptProgram struct, filling script pointer and proc lookup table
-//void InitScriptProgram(ScriptProgram &prog, const char* fileName, bool fullPath) {
-//	prog.initialized = false;
-//	fo::Program* scriptPtr = (fullPath)
-//	                       ? fo::func::allocateProgram(fileName)
-//	                       : fo::func::loadProgram(fileName);
-//
-//	if (scriptPtr) {
-//		prog.ptr = scriptPtr;
-//		// fill lookup table
-//		const char** procTable = fo::var::procTableStrs;
-//		for (int i = 0; i < fo::Scripts::ScriptProc::count; ++i) {
-//			prog.procLookup[i] = fo::func::interpretFindProcedure(prog.ptr, procTable[i]);
-//		}
-//	} else {
-//		prog.ptr = nullptr;
-//	}
-//}
-//
-//void RunScriptProgram(ScriptProgram &prog) {
-//	if (!prog.initialized && prog.ptr) {
-//		fo::func::runProgram(prog.ptr);
-//		fo::func::interpret(prog.ptr, -1);
-//		prog.initialized = true;
-//	}
-//}
-//
+
+// loads script from .int file into a ScriptProgram struct, filling script pointer and proc lookup table
+void InitScriptProgram(fallout::ScriptProgram &prog, const char* fileName, bool fullPath) {
+	prog.initialized = false;
+	fallout::Program* scriptPtr = (fullPath)
+	                       ? fallout::programCreateByPath(fileName)
+	                       : fallout::scriptsCreateProgramByName(fileName);
+
+	if (scriptPtr) {
+		prog.ptr = scriptPtr;
+		// fill lookup table
+		const char** procTable = fallout::gScriptProcNames;
+		for (int i = 0; i < fo::Scripts::ScriptProc::count; ++i) {
+			prog.procLookup[i] = fallout::programFindProcedure(prog.ptr, procTable[i]);
+		}
+	} else {
+		prog.ptr = nullptr;
+	}
+}
+
+void RunScriptProgram(fallout::ScriptProgram &prog) {
+	if (!prog.initialized && prog.ptr) {
+		fallout::runProgram(prog.ptr);
+		fallout::_interpret(prog.ptr, -1);
+		prog.initialized = true;
+	}
+}
+
 //void ScriptExtender::AddProgramToMap(ScriptProgram &prog) {
 //	sfallProgsMap[prog.ptr] = prog;
 //}
-//
+
 //ScriptProgram* ScriptExtender::GetGlobalScriptProgram(fo::Program* scriptPtr) {
 //	SfallProgsMap::iterator it = sfallProgsMap.find(scriptPtr);
 //	return (it == sfallProgsMap.end()) ? nullptr : &it->second ; // prog
 //}
-//
+
 //bool IsGameScript(const char* filename) {
 //	for (int i = 1; filename[i]; ++i) if (i > 7) return false; // script name is more than 8 characters
 //	// script name is 8 characters, try to find this name in the array of game scripts
@@ -492,7 +493,7 @@ using namespace script;
 //	fo::ScriptInstance* scriptPtr;
 //	if (fo::func::scr_ptr(sid, &scriptPtr) == -1) return -1;
 //
-//	scriptPtr->program = fo::func::loadProgram(fo::var::scriptListInfo[scriptPtr->scriptIdx & 0xFFFFFF].fileName);
+//	scriptPtr->program = fallout::scriptsCreateProgramByName(fo::var::scriptListInfo[scriptPtr->scriptIdx & 0xFFFFFF].fileName);
 //	if (!scriptPtr->program) return -1;
 //	if (scriptPtr->program->flags & 0x124) return 0;
 //
@@ -503,7 +504,7 @@ using namespace script;
 //	scriptPtr->action = fo::Scripts::ScriptProc::no_p_proc;
 //	scriptPtr->scriptOverrides = 0;
 //
-//	fo::func::runProgram(scriptPtr->program);
+//	fallout::runProgram(scriptPtr->program);
 //	return 0;
 //}
 //
@@ -617,36 +618,36 @@ using namespace script;
 //	while (!executeTimedEvents.empty()) executeTimedEvents.pop();
 //	HookScripts::HookScriptClear();
 //}
-//
-//void RunScriptProc(ScriptProgram* prog, const char* procName) {
-//	fo::Program* sptr = prog->ptr;
-//	int procPosition = fo::func::interpretFindProcedure(sptr, procName);
-//	if (procPosition != -1) {
-//		fo::func::executeProcedure(sptr, procPosition);
-//	}
-//}
-//
-//void RunScriptProc(ScriptProgram* prog, long procId) {
-//	if (procId > 0 && procId < fo::Scripts::ScriptProc::count) {
-//		int procPosition = prog->procLookup[procId];
-//		if (procPosition != -1) {
-//			fo::func::executeProcedure(prog->ptr, procPosition);
-//		}
-//	}
-//}
 
-int RunScriptStartProc(ScriptProgram* prog) {
+void RunScriptProc(fallout::ScriptProgram* prog, const char* procName) {
+	fallout::Program* sptr = prog->ptr;
+	int procPosition = fallout::programFindProcedure(sptr, procName);
+	if (procPosition != -1) {
+		fallout::_executeProcedure(sptr, procPosition);
+	}
+}
+
+void RunScriptProc(fallout::ScriptProgram* prog, long procId) {
+	if (procId > 0 && procId < fo::Scripts::ScriptProc::count) {
+		int procPosition = prog->procLookup[procId];
+		if (procPosition != -1) {
+			fallout::_executeProcedure(prog->ptr, procPosition);
+		}
+	}
+}
+
+int RunScriptStartProc(fallout::ScriptProgram* prog) {
 	int procPosition = prog->procLookup[fo::Scripts::ScriptProc::start];
 	if (procPosition != -1) {
-		fo::func::executeProcedure(prog->ptr, procPosition);
+		fallout::_executeProcedure(prog->ptr, procPosition);
 	}
 	return procPosition;
 }
-//
+
 //static void RunScript(GlobalScript* script) {
 //	script->count = 0;
 //	if (script->startProc != -1) {
-//		fo::func::executeProcedure(script->prog.ptr, script->startProc); // run "start"
+//		fallout::_executeProcedure(script->prog.ptr, script->startProc); // run "start"
 //	}
 //}
 //
@@ -689,7 +690,7 @@ int RunScriptStartProc(ScriptProgram* prog) {
 //	if (procId == fo::Scripts::ScriptProc::map_enter_p_proc) {
 //		// map changed, all game objects were destroyed and scripts detached, need to re-insert global scripts into the game
 //		for (std::vector<GlobalScript>::const_iterator it = globalScripts.cbegin(); it != globalScripts.cend(); ++it) {
-//			fo::func::runProgram(it->prog.ptr);
+//			fallout::runProgram(it->prog.ptr);
 //		}
 //	} else if (procId == fo::Scripts::ScriptProc::map_exit_p_proc) {
 //		onMapExit.invoke();

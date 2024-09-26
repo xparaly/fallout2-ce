@@ -13,10 +13,10 @@ namespace sfall
 class HookCommon {
 public:
 	static DWORD GetHSArgCount();
-	static script::ScriptValue GetHSArg();
-	static script::ScriptValue GetHSArgAt(DWORD id);
-	static void SetHSArg(DWORD id, const script::ScriptValue& value);
-	static void SetHSReturn(const script::ScriptValue& value);
+	static fallout::ProgramValue GetHSArg();
+	static fallout::ProgramValue GetHSArgAt(DWORD id);
+	static void SetHSArg(DWORD id, const fallout::ProgramValue& value);
+	static void SetHSReturn(const fallout::ProgramValue& value);
 
 	static void GameModeChangeHook(DWORD exit);
 	static void __stdcall KeyPressHook(DWORD* dxKey, bool pressed, DWORD vKey);
@@ -36,7 +36,7 @@ struct HookScript {
 extern std::vector<HookScript> hooks[];
 
 extern bool allowNonIntReturn; // allow set_sfall_return with non-int values (validate value in the hook code)
-extern script::DataType retTypes[]; // current hook return value types
+extern fallout::opcode_t retTypes[]; // current hook return value types
 extern DWORD args[];  // current hook arguments
 extern DWORD rets[];  // current hook return values
 

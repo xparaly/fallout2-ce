@@ -68,7 +68,7 @@ typedef struct ScriptList {
     int nextScriptId;
 } ScriptList;
 
-static Program* scriptsCreateProgramByName(const char* name);
+//static Program* scriptsCreateProgramByName(const char* name);
 static void _doBkProcesses();
 static void _script_chk_critters();
 static void _script_chk_timed_events();
@@ -658,7 +658,7 @@ int scriptSetActionBeingUsed(int sid, int value)
 }
 
 // 0x4A3B74
-static Program* scriptsCreateProgramByName(const char* name)
+Program* scriptsCreateProgramByName(const char* name)
 {
     char path[COMPAT_MAX_PATH];
 
