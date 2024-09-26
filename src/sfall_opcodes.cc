@@ -31,6 +31,8 @@
 #include "svga.h"
 #include "tile.h"
 #include "worldmap.h"
+#include "sfall\Modules\HookScripts.h"
+
 
 namespace fallout {
 
@@ -734,6 +736,22 @@ static void op_explosions_metarule(Program* program)
     }
 }
 
+// used for both register_hook and register_hook_proc
+static void op_register_hook(Program* program)
+{
+    bool specReg = false;
+    //	switch (ctx.opcode()) {
+    //	case 0x27d:
+    //		specReg = true;
+    //	case 0x262:
+
+    int id = programStackPopInteger(program);
+    int proc = programStackPopInteger(program);
+    sfall::HookScripts::RegisterHook(program, id, proc, specReg);
+}
+
+
+
 // pow (^)
 static void op_power(Program* program)
 {
@@ -1107,6 +1125,7 @@ void sfallOpcodesInit()
     interpreterRegisterOpcode(0x8256, opGetArrayKey);
     interpreterRegisterOpcode(0x8257, opStackArray);
     interpreterRegisterOpcode(0x8261, op_explosions_metarule);
+    interpreterRegisterOpcode(0x8262, op_register_hook);
     interpreterRegisterOpcode(0x8263, op_power);
     interpreterRegisterOpcode(0x8267, opRound);
     interpreterRegisterOpcode(0x826B, opGetMessage);

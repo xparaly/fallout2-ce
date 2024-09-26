@@ -52,11 +52,11 @@ __inline void DisplayPrint(const std::string& str) {
 }
 
 // rect_free_ function for inline implementation
-__forceinline void rect_free(fo::RectList* rect) {
-	fo::RectList* front = fo::var::rectList;
-	fo::var::rectList = rect;
-	rect->nextRect = front;
-}
+//__forceinline void rect_free(fo::RectList* rect) {
+//	fo::RectList* front = fo::var::rectList;
+//	fo::var::rectList = rect;
+//	rect->nextRect = front;
+//}
 
 // returns message string from given file or "Error" when not found
 const char* GetMessageStr(const fo::MessageList* file, long messageId);

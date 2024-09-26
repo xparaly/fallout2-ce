@@ -1,7 +1,8 @@
 //#include "..\..\FalloutEngine\Fallout2.h"
 #include "..\..\..\to_move_somewhere_else.h"
 #include "..\LoadGameHook.h"
-
+#include "..\..\Logging.h"
+#include "..\..\FalloutEngine\Functions.h"
 #include "Common.h"
 
 using namespace sfall::script;
@@ -116,7 +117,7 @@ static void __stdcall RunSpecificHookScript(HookScript *hook) {
 	cArg = 0;
 	cRetTmp = 0;
 	if (hook->callback != -1) {
-		fo::func::executeProcedure(hook->prog.ptr, hook->callback);
+		fallout::_executeProcedure(hook->prog.ptr, hook->callback);
 	} else {
 		hook->callback = RunScriptStartProc(&hook->prog); // run start
 	}

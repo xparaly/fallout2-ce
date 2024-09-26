@@ -20,6 +20,7 @@
 #define VARIABLES_H
 
 #include <cassert>
+#include <Windows.h>
 
 #include "VariableOffsets.h"
 //#include "Structs.h"

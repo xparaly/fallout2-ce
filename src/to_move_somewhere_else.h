@@ -4,9 +4,17 @@
 //#include <string>
 //#include <algorithm>
 
-
+// global flag, indicating that debugging features of Sfall are enabled
+#ifndef NO_SFALL_DEBUG
+    extern bool isDebug;
+#else
+    #define isDebug false
+#endif
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
+
+namespace fallout {
+}
 
 namespace sfall {
     namespace script {
@@ -64,17 +72,17 @@ namespace Fields {
         ammoPid = 0x40, // saveable
     };
 
-}
+} // namespace Fields
 
 typedef unsigned long DWORD;
 
 
-enum class DataType : DWORD {
-    NONE = 0,
-    INT = 1,
-    FLOAT = 2,
-    STR = 3,
-}; // namespace Fields
+//enum class DataType : DWORD {
+//    NONE = 0,
+//    INT = 1,
+//    FLOAT = 2,
+//    STR = 3,
+//}; 
 
 
 

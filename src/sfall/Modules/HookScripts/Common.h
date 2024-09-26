@@ -3,7 +3,7 @@
 #include "..\..\..\to_move_somewhere_else.h"
 #include "..\HookScripts.h"
 #include "..\ScriptExtender.h"
-//#include "..\Scripting\ScriptValue.h"
+#include "..\Scripting\ScriptValue.h"
 
 // Common variables and functions for hook script implementations
 
@@ -27,7 +27,7 @@ public:
 
 // Struct for registered hook script
 struct HookScript {
-	ScriptProgram prog;
+	fallout::ScriptProgram prog;
 	int callback;        // procedure position in script's proc table
 	bool isGlobalScript; // false for hs_* scripts, true for gl* scripts
 };

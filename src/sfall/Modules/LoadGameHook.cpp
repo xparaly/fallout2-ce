@@ -30,10 +30,12 @@
 //#include "FileSystem.h"
 //#include "HeroAppearance.h"
 #include "HookScripts.h"
+#include "..\FalloutEngine\Functions.h"
+#include "..\FalloutEngine\FunctionOffsets.h"
 //#include "Objects.h"
 //#include "PartyControl.h"
 //#include "Perks.h"
-//#include "ScriptExtender.h"
+#include "ScriptExtender.h"
 //#include "Scripting\Arrays.h"
 //#include "Worldmap.h"
 
@@ -41,107 +43,107 @@
 #include <Windows.h>
 #include <chrono>
 
-//namespace sfall
-//{
-//
-//#define _InLoop2(type, flag) __asm { \
-//	__asm push flag                  \
-//	__asm push type                  \
-//	__asm call SetInLoop             \
-//}
-//#define _InLoop(type, flag) __asm {  \
-//	pushadc                          \
-//	_InLoop2(type, flag)             \
-//	popadc                           \
-//}
-//
-//static Delegate<> onBeforeGameInit;
-//static Delegate<> onGameInit;
-//static Delegate<> onAfterGameInit;
-//static Delegate<> onGameExit;
-//static Delegate<> onGameReset;
-//static Delegate<> onBeforeGameStart;
-//static Delegate<> onAfterGameStarted;
-//static Delegate<> onAfterNewGame;
-//static Delegate<DWORD> onGameModeChange;
-//static Delegate<> onBeforeGameClose;
-//static Delegate<> onCombatStart;
-//static Delegate<> onCombatEnd;
-//static Delegate<> onBeforeMapLoad;
-//
-//static DWORD inLoop = 0;
-//static DWORD saveInCombatFix;
-//static bool gameLoaded = false;
-//static bool onLoadingMap = false;
-//
-//static std::chrono::time_point<std::chrono::steady_clock> timeBeforeGameInit;
-//static std::chrono::time_point<std::chrono::steady_clock> timeBeforeGameStart;
-//
-//char LoadGameHook::mapLoadingName[16]; // current loading/loaded map name
-//
-//long LoadGameHook::interfaceWID = -1;
-//
-//void saveTimeIntervalStart(std::chrono::time_point<std::chrono::steady_clock>& startTime) {
-//	startTime = std::chrono::high_resolution_clock::now();
-//}
-//
-//void logTimeInterval(const char* action, const std::chrono::time_point<std::chrono::steady_clock>& startTime) {
-//	auto stopTime = std::chrono::high_resolution_clock::now();
-//	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stopTime - startTime);
-//	dlog_f("%s in: %d us\n", DL_MAIN, action, duration.count());
-//}
-//
-//bool LoadGameHook::IsMapLoading() {
-//	return onLoadingMap;
-//}
-//
-//// True if game was started, false when on the main menu
-//bool IsGameLoaded() {
-//	return gameLoaded;
-//}
-//
-//DWORD InWorldMap() {
-//	return (inLoop & WORLDMAP) ? 1 : 0;
-//}
-//
-//DWORD InCombat() {
-//	return (inLoop & COMBAT) ? 1 : 0;
-//}
-//
-//DWORD InDialog() {
-//	return (inLoop & DIALOG) ? 1 : 0;
-//}
-//
-//DWORD GetLoopFlags() {
-//	return inLoop;
-//}
-//
-//void SetLoopFlag(LoopFlag flag) {
-//	inLoop |= flag;
-//}
-//
-//void ClearLoopFlag(LoopFlag flag) {
-//	inLoop &= ~flag;
-//}
-//
-//static void __stdcall GameModeChange(DWORD state) {
-//	onGameModeChange.invoke(state);
-//}
-//
-//void __stdcall SetInLoop(DWORD mode, LoopFlag flag) {
-//	unsigned long _inLoop = inLoop;
-//	if (mode) {
-//		SetLoopFlag(flag);
-//	} else {
-//		ClearLoopFlag(flag);
-//	}
-//	if (_inLoop ^ inLoop) GameModeChange(0);
-//}
-//
+namespace sfall
+{
+
+#define _InLoop2(type, flag) __asm { \
+	__asm push flag                  \
+	__asm push type                  \
+	__asm call SetInLoop             \
+}
+#define _InLoop(type, flag) __asm {  \
+	pushadc                          \
+	_InLoop2(type, flag)             \
+	popadc                           \
+}
+
+static Delegate<> onBeforeGameInit;
+static Delegate<> onGameInit;
+static Delegate<> onAfterGameInit;
+static Delegate<> onGameExit;
+static Delegate<> onGameReset;
+static Delegate<> onBeforeGameStart;
+static Delegate<> onAfterGameStarted;
+static Delegate<> onAfterNewGame;
+static Delegate<DWORD> onGameModeChange;
+static Delegate<> onBeforeGameClose;
+static Delegate<> onCombatStart;
+static Delegate<> onCombatEnd;
+static Delegate<> onBeforeMapLoad;
+
+static DWORD inLoop = 0;
+static DWORD saveInCombatFix;
+static bool gameLoaded = false;
+static bool onLoadingMap = false;
+
+static std::chrono::time_point<std::chrono::steady_clock> timeBeforeGameInit;
+static std::chrono::time_point<std::chrono::steady_clock> timeBeforeGameStart;
+
+char LoadGameHook::mapLoadingName[16]; // current loading/loaded map name
+
+long LoadGameHook::interfaceWID = -1;
+
+void saveTimeIntervalStart(std::chrono::time_point<std::chrono::steady_clock>& startTime) {
+	startTime = std::chrono::high_resolution_clock::now();
+}
+
+void logTimeInterval(const char* action, const std::chrono::time_point<std::chrono::steady_clock>& startTime) {
+	auto stopTime = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stopTime - startTime);
+	dlog_f("%s in: %d us\n", DL_MAIN, action, duration.count());
+}
+
+bool LoadGameHook::IsMapLoading() {
+	return onLoadingMap;
+}
+
+// True if game was started, false when on the main menu
+bool IsGameLoaded() {
+	return gameLoaded;
+}
+
+DWORD InWorldMap() {
+	return (inLoop & WORLDMAP) ? 1 : 0;
+}
+
+DWORD InCombat() {
+	return (inLoop & COMBAT) ? 1 : 0;
+}
+
+DWORD InDialog() {
+	return (inLoop & DIALOG) ? 1 : 0;
+}
+
+DWORD GetLoopFlags() {
+	return inLoop;
+}
+
+void SetLoopFlag(LoopFlag flag) {
+	inLoop |= flag;
+}
+
+void ClearLoopFlag(LoopFlag flag) {
+	inLoop &= ~flag;
+}
+
+static void __stdcall GameModeChange(DWORD state) {
+	onGameModeChange.invoke(state);
+}
+
+void __stdcall SetInLoop(DWORD mode, LoopFlag flag) {
+	unsigned long _inLoop = inLoop;
+	if (mode) {
+		SetLoopFlag(flag);
+	} else {
+		ClearLoopFlag(flag);
+	}
+	if (_inLoop ^ inLoop) GameModeChange(0);
+}
+
 //void GetSavePath(char* buf, char* ftype) {
 //	sprintf(buf, "%s\\savegame\\slot%.2d\\sfall%s.sav", fo::var::patches, ExtraSaveSlots::GetSaveSlot() + 1, ftype); //add SuperSave Page offset
 //}
-//
+
 //static void __stdcall SaveGame2() {
 //	char buf[MAX_PATH];
 //	GetSavePath(buf, "gv");
@@ -194,7 +196,7 @@
 //	fo::util::DisplayPrint(Translate::SfallSaveDataFailure());
 //	fo::func::gsound_play_sfx_file("IISXXXX1");
 //}
-//
+
 //static DWORD __stdcall CombatSaveTest() {
 //	if (!saveInCombatFix && !PartyControl::IsNpcControlled()) return 1;
 //	if (inLoop & COMBAT) {
@@ -211,7 +213,7 @@
 //	}
 //	return 1;
 //}
-//
+
 //static __declspec(naked) void SaveGame_hook() {
 //	__asm {
 //		push ecx;
@@ -238,8 +240,8 @@
 //		retn;
 //	}
 //}
-//
-//// Called right before savegame slot is being loaded
+
+// Called right before savegame slot is being loaded
 //static bool LoadGame_Before() {
 //	saveTimeIntervalStart(timeBeforeGameStart);
 //	onBeforeGameStart.invoke();
@@ -284,8 +286,8 @@
 //	fo::func::debug_printf("\n[SFALL] ERROR reading data: %s", buf);
 //	return (true & !isDebug);
 //}
-//
-//// called whenever game is being reset (prior to loading a save or when returning to main menu)
+
+// called whenever game is being reset (prior to loading a save or when returning to main menu)
 //static bool __stdcall GameReset(DWORD isGameLoad) {
 //	onGameReset.invoke();
 //	if (isDebug) {
@@ -297,33 +299,33 @@
 //
 //	return (isGameLoad) ? LoadGame_Before() : false;
 //}
-//
-//// Called after game was loaded from a save
-//static void __stdcall LoadGame_After() {
-//	onAfterGameStarted.invoke();
-//	gameLoaded = true;
-//	logTimeInterval("Game loaded", timeBeforeGameStart);
-//}
-//
-//static __declspec(naked) void LoadGame_hook() {
-//	__asm {
-//		_InLoop(1, LOADGAME);
-//		call fo::funcoffs::LoadGame_;
-//		_InLoop(0, LOADGAME);
-//		cmp  eax, 1;
-//		jne  end;
-//		// Invoked
-//		push ecx;
-//		push edx;
-//		call LoadGame_After;
-//		mov  eax, 1;
-//		pop  edx;
-//		pop  ecx;
-//end:
-//		retn;
-//	}
-//}
-//
+
+// Called after game was loaded from a save
+static void __stdcall LoadGame_After() {
+	onAfterGameStarted.invoke();
+	gameLoaded = true;
+	logTimeInterval("Game loaded", timeBeforeGameStart);
+}
+
+static __declspec(naked) void LoadGame_hook() {
+	__asm {
+		_InLoop(1, LOADGAME);
+		call fo::funcoffs::LoadGame_;
+		_InLoop(0, LOADGAME);
+		cmp  eax, 1;
+		jne  end;
+		// Invoked
+		push ecx;
+		push edx;
+		call LoadGame_After;
+		mov  eax, 1;
+		pop  edx;
+		pop  ecx;
+end:
+		retn;
+	}
+}
+
 //static __declspec(naked) void EndLoadHook() {
 //	__asm {
 //		call fo::funcoffs::EndLoad_;
@@ -333,76 +335,76 @@
 //		retn;
 //	}
 //}
-//
-//static void __stdcall NewGame_Before() {
-//	saveTimeIntervalStart(timeBeforeGameStart);
-//	onBeforeGameStart.invoke();
-//}
-//
-//static void __stdcall NewGame_After() {
-//	onAfterNewGame.invoke();
-//	onAfterGameStarted.invoke();
-//	gameLoaded = true;
-//	logTimeInterval("New Game started", timeBeforeGameStart);
-//}
-//
-//static __declspec(naked) void main_load_new_hook() {
-//	__asm {
-//		push eax;
-//		call NewGame_Before;
-//		pop  eax;
-//		call fo::funcoffs::main_load_new_;
-//		jmp  NewGame_After;
-//	}
-//}
-//
-//static void __stdcall GameInitialization() {
-//	saveTimeIntervalStart(timeBeforeGameInit);
-//	onBeforeGameInit.invoke();
-//}
-//
-//static void __stdcall game_init_hook() {
-//	onGameInit.invoke();
-//}
-//
-//static void __stdcall GameInitialized(int initResult) {
-//	#ifdef NDEBUG
-//	if (!initResult) {
-//		MessageBoxA(0, "Game initialization failed!", 0, MB_TASKMODAL | MB_ICONERROR);
-//		return;
-//	}
-//	#endif
-//	onAfterGameInit.invoke();
-//
-//	logTimeInterval("Game initalized", timeBeforeGameInit);
-//}
-//
-//static void __stdcall GameExit() {
-//	onGameExit.invoke();
-//}
-//
-//static void __stdcall GameClose() {
-//	onBeforeGameClose.invoke();
-//}
-//
-//static void __stdcall MapLoadHook() {
-//	onBeforeMapLoad.invoke();
-//}
-//
-//static __declspec(naked) void main_init_system_hook() {
-//	__asm {
-//		pushadc;
-//		call GameInitialization;
-//		popadc;
-//		call fo::funcoffs::main_init_system_;
-//		pushadc;
-//		push eax;
-//		call GameInitialized;
-//		popadc;
-//		retn;
-//	}
-//}
-//
+
+static void __stdcall NewGame_Before() {
+	saveTimeIntervalStart(timeBeforeGameStart);
+	onBeforeGameStart.invoke();
+}
+
+static void __stdcall NewGame_After() {
+	onAfterNewGame.invoke();
+	onAfterGameStarted.invoke();
+	gameLoaded = true;
+	logTimeInterval("New Game started", timeBeforeGameStart);
+}
+
+static __declspec(naked) void main_load_new_hook() {
+	__asm {
+		push eax;
+		call NewGame_Before;
+		pop  eax;
+		call fo::funcoffs::main_load_new_;
+		jmp  NewGame_After;
+	}
+}
+
+static void __stdcall GameInitialization() {
+	saveTimeIntervalStart(timeBeforeGameInit);
+	onBeforeGameInit.invoke();
+}
+
+static void __stdcall game_init_hook() {
+	onGameInit.invoke();
+}
+
+static void __stdcall GameInitialized(int initResult) {
+	#ifdef NDEBUG
+	if (!initResult) {
+		MessageBoxA(0, "Game initialization failed!", 0, MB_TASKMODAL | MB_ICONERROR);
+		return;
+	}
+	#endif
+	onAfterGameInit.invoke();
+
+	logTimeInterval("Game initalized", timeBeforeGameInit);
+}
+
+static void __stdcall GameExit() {
+	onGameExit.invoke();
+}
+
+static void __stdcall GameClose() {
+	onBeforeGameClose.invoke();
+}
+
+static void __stdcall MapLoadHook() {
+	onBeforeMapLoad.invoke();
+}
+
+static __declspec(naked) void main_init_system_hook() {
+	__asm {
+		pushadc;
+		call GameInitialization;
+		popadc;
+		call fo::funcoffs::main_init_system_;
+		pushadc;
+		push eax;
+		call GameInitialized;
+		popadc;
+		retn;
+	}
+}
+
 //static __declspec(naked) void game_reset_hook() {
 //	__asm {
 //		pushadc;
@@ -412,7 +414,7 @@
 //		jmp  fo::funcoffs::game_reset_;
 //	}
 //}
-//
+
 //static __declspec(naked) void game_reset_on_load_hook() {
 //	__asm {
 //		pushadc;
@@ -429,153 +431,153 @@
 //		retn;
 //	}
 //}
-//
-//static __declspec(naked) void before_game_exit_hook() {
-//	__asm {
-//		pushadc;
-//		push 1;
-//		call GameModeChange;
-//		popadc;
-//		jmp  fo::funcoffs::map_exit_;
-//	}
-//}
-//
-//static __declspec(naked) void after_game_exit_hook() {
-//	__asm {
-//		pushadc;
-//		call GameExit;
-//		popadc;
-//		jmp  fo::funcoffs::main_menu_create_;
-//	}
-//}
-//
-//static __declspec(naked) void game_close_hook() {
-//	__asm {
-//		pushadc;
-//		call GameClose;
-//		popadc;
-//		jmp  fo::funcoffs::game_exit_;
-//	}
-//}
-//
-//
-//static __declspec(naked) void map_load_hook() {
-//	__asm {
-//		mov  esi, ebx;
-//		lea  edi, LoadGameHook::mapLoadingName;
-//		mov  ecx, 4;
-//		rep  movsd; // copy the name of the loaded map to mapLoadingName
-//		mov  onLoadingMap, 1;
-//		push eax;
-//		push edx;
-//		call MapLoadHook;
-//		pop  edx;
-//		pop  eax;
-//		call fo::funcoffs::map_load_file_;
-//		mov  onLoadingMap, 0;
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void WorldMapHook_Start() {
-//	__asm {
-//		call fo::funcoffs::wmInterfaceInit_;
-//		test eax, eax;
-//		jl   skip;
-//		push eax;
-//		_InLoop2(1, WORLDMAP);
-//		pop  eax;
-//skip:
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void WorldMapHook_End() {
-//	__asm {
-//		push eax;
-//		_InLoop2(0, WORLDMAP);
-//		pop  eax;
-//		jmp  fo::funcoffs::remove_bk_process_;
-//	}
-//}
-//
-//static void __fastcall CombatInternal(fo::CombatGcsd* gcsd) {
-//	onCombatStart.invoke();
-//	SetInLoop(1, COMBAT);
-//
-//	__asm mov  eax, gcsd;
-//	__asm call fo::funcoffs::combat_;
-//
-//	onCombatEnd.invoke();
-//	SetInLoop(0, COMBAT);
-//}
-//
-//static __declspec(naked) void CombatHook() {
-//	__asm {
-//		push ecx;
-//		push edx;
-//		mov  ecx, eax;
-//		call CombatInternal;
-//		pop  edx;
-//		pop  ecx;
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void PlayerCombatHook() {
-//	__asm {
-//		_InLoop(1, PCOMBAT);
-//		call fo::funcoffs::combat_input_;
-//		_InLoop(0, PCOMBAT);
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void EscMenuHook() {
-//	__asm {
-//		_InLoop(1, ESCMENU);
-//		call fo::funcoffs::do_optionsFunc_;
-//		_InLoop(0, ESCMENU);
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void EscMenuHook2() {
-//	__asm {
-//		_InLoop(1, ESCMENU);
-//		call fo::funcoffs::do_options_;
-//		_InLoop(0, ESCMENU);
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void OptionsMenuHook() {
-//	__asm {
-//		_InLoop(1, OPTIONS);
-//		call fo::funcoffs::do_prefscreen_;
-//		_InLoop(0, OPTIONS);
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void HelpMenuHook() {
-//	__asm {
-//		_InLoop(1, HELP);
-//		call fo::funcoffs::game_help_;
-//		_InLoop(0, HELP);
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void PauseWindowHook() {
-//	__asm {
-//		_InLoop(1, PAUSEWIN);
-//		call fo::funcoffs::PauseWindow_;
-//		_InLoop(0, PAUSEWIN);
-//		retn;
-//	}
-//}
-//
+
+static __declspec(naked) void before_game_exit_hook() {
+	__asm {
+		pushadc;
+		push 1;
+		call GameModeChange;
+		popadc;
+		jmp  fo::funcoffs::map_exit_;
+	}
+}
+
+static __declspec(naked) void after_game_exit_hook() {
+	__asm {
+		pushadc;
+		call GameExit;
+		popadc;
+		jmp  fo::funcoffs::main_menu_create_;
+	}
+}
+
+static __declspec(naked) void game_close_hook() {
+	__asm {
+		pushadc;
+		call GameClose;
+		popadc;
+		jmp  fo::funcoffs::game_exit_;
+	}
+}
+
+
+static __declspec(naked) void map_load_hook() {
+	__asm {
+		mov  esi, ebx;
+		lea  edi, LoadGameHook::mapLoadingName;
+		mov  ecx, 4;
+		rep  movsd; // copy the name of the loaded map to mapLoadingName
+		mov  onLoadingMap, 1;
+		push eax;
+		push edx;
+		call MapLoadHook;
+		pop  edx;
+		pop  eax;
+		call fo::funcoffs::map_load_file_;
+		mov  onLoadingMap, 0;
+		retn;
+	}
+}
+
+static __declspec(naked) void WorldMapHook_Start() {
+	__asm {
+		call fo::funcoffs::wmInterfaceInit_;
+		test eax, eax;
+		jl   skip;
+		push eax;
+		_InLoop2(1, WORLDMAP);
+		pop  eax;
+skip:
+		retn;
+	}
+}
+
+static __declspec(naked) void WorldMapHook_End() {
+	__asm {
+		push eax;
+		_InLoop2(0, WORLDMAP);
+		pop  eax;
+		jmp  fo::funcoffs::remove_bk_process_;
+	}
+}
+
+static void __fastcall CombatInternal(fo::CombatGcsd* gcsd) {
+	onCombatStart.invoke();
+	SetInLoop(1, COMBAT);
+
+	__asm mov  eax, gcsd;
+	__asm call fo::funcoffs::combat_;
+
+	onCombatEnd.invoke();
+	SetInLoop(0, COMBAT);
+}
+
+static __declspec(naked) void CombatHook() {
+	__asm {
+		push ecx;
+		push edx;
+		mov  ecx, eax;
+		call CombatInternal;
+		pop  edx;
+		pop  ecx;
+		retn;
+	}
+}
+
+static __declspec(naked) void PlayerCombatHook() {
+	__asm {
+		_InLoop(1, PCOMBAT);
+		call fo::funcoffs::combat_input_;
+		_InLoop(0, PCOMBAT);
+		retn;
+	}
+}
+
+static __declspec(naked) void EscMenuHook() {
+	__asm {
+		_InLoop(1, ESCMENU);
+		call fo::funcoffs::do_optionsFunc_;
+		_InLoop(0, ESCMENU);
+		retn;
+	}
+}
+
+static __declspec(naked) void EscMenuHook2() {
+	__asm {
+		_InLoop(1, ESCMENU);
+		call fo::funcoffs::do_options_;
+		_InLoop(0, ESCMENU);
+		retn;
+	}
+}
+
+static __declspec(naked) void OptionsMenuHook() {
+	__asm {
+		_InLoop(1, OPTIONS);
+		call fo::funcoffs::do_prefscreen_;
+		_InLoop(0, OPTIONS);
+		retn;
+	}
+}
+
+static __declspec(naked) void HelpMenuHook() {
+	__asm {
+		_InLoop(1, HELP);
+		call fo::funcoffs::game_help_;
+		_InLoop(0, HELP);
+		retn;
+	}
+}
+
+static __declspec(naked) void PauseWindowHook() {
+	__asm {
+		_InLoop(1, PAUSEWIN);
+		call fo::funcoffs::PauseWindow_;
+		_InLoop(0, PAUSEWIN);
+		retn;
+	}
+}
+
 //static __declspec(naked) void CharacterHook() {
 //	__asm {
 //		push edx;
@@ -596,92 +598,92 @@
 //		retn;
 //	}
 //}
-//
-//static __declspec(naked) void DialogHook_Start() {
-//	__asm {
-//		_InLoop2(1, DIALOG);
-//		mov ebx, 1;
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void DialogHook_End() {
-//	__asm {
-//		and inLoop, ~DIALOG;  // unset flag
-//		_InLoop2(1, SPECIAL); // set the flag before animating the panel when exiting the dialog
-//		call fo::funcoffs::gdDestroyHeadWindow_;
-//		_InLoop2(0, SPECIAL);
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void PipboyHook_Start() {
-//	__asm {
-//		push eax;
-//		_InLoop2(1, PIPBOY);
-//		pop  eax;
-//		jmp  fo::funcoffs::win_draw_;
-//	}
-//}
-//
-//static __declspec(naked) void PipboyHook_End() {
-//	__asm {
-//		push eax;
-//		_InLoop2(0, PIPBOY);
-//		pop  eax;
-//		jmp  fo::funcoffs::win_delete_;
-//	}
-//}
-//
-//static __declspec(naked) void SkilldexHook() {
-//	__asm {
-//		_InLoop(1, SKILLDEX);
-//		call fo::funcoffs::skilldex_select_;
-//		_InLoop(0, SKILLDEX);
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void HandleInventoryHook_Start() {
-//	__asm {
-//		_InLoop2(1, INVENTORY);
-//		xor eax, eax;
-//		jmp fo::funcoffs::inven_set_mouse_;
-//	}
-//}
-//
-//static __declspec(naked) void HandleInventoryHook_End() {
-//	__asm {
-//		_InLoop2(0, INVENTORY);
-//		mov eax, esi;
-//		jmp fo::funcoffs::exit_inventory_;
-//	}
-//}
-//
-//static __declspec(naked) void UseInventoryOnHook_Start() {
-//	__asm {
-//		_InLoop2(1, INTFACEUSE);
-//		xor eax, eax;
-//		jmp fo::funcoffs::inven_set_mouse_;
-//	}
-//}
-//
-//static __declspec(naked) void UseInventoryOnHook_End() {
-//	__asm {
-//		_InLoop2(0, INTFACEUSE);
-//		mov eax, edi;
-//		jmp fo::funcoffs::exit_inventory_;
-//	}
-//}
-//
-//static __declspec(naked) void LootContainerHook_Start() {
-//	__asm {
-//		_InLoop2(1, INTFACELOOT);
-//		xor eax, eax;
-//		jmp fo::funcoffs::inven_set_mouse_;
-//	}
-//}
-//
+
+static __declspec(naked) void DialogHook_Start() {
+	__asm {
+		_InLoop2(1, DIALOG);
+		mov ebx, 1;
+		retn;
+	}
+}
+
+static __declspec(naked) void DialogHook_End() {
+	__asm {
+		and inLoop, ~DIALOG;  // unset flag
+		_InLoop2(1, SPECIAL); // set the flag before animating the panel when exiting the dialog
+		call fo::funcoffs::gdDestroyHeadWindow_;
+		_InLoop2(0, SPECIAL);
+		retn;
+	}
+}
+
+static __declspec(naked) void PipboyHook_Start() {
+	__asm {
+		push eax;
+		_InLoop2(1, PIPBOY);
+		pop  eax;
+		jmp  fo::funcoffs::win_draw_;
+	}
+}
+
+static __declspec(naked) void PipboyHook_End() {
+	__asm {
+		push eax;
+		_InLoop2(0, PIPBOY);
+		pop  eax;
+		jmp  fo::funcoffs::win_delete_;
+	}
+}
+
+static __declspec(naked) void SkilldexHook() {
+	__asm {
+		_InLoop(1, SKILLDEX);
+		call fo::funcoffs::skilldex_select_;
+		_InLoop(0, SKILLDEX);
+		retn;
+	}
+}
+
+static __declspec(naked) void HandleInventoryHook_Start() {
+	__asm {
+		_InLoop2(1, INVENTORY);
+		xor eax, eax;
+		jmp fo::funcoffs::inven_set_mouse_;
+	}
+}
+
+static __declspec(naked) void HandleInventoryHook_End() {
+	__asm {
+		_InLoop2(0, INVENTORY);
+		mov eax, esi;
+		jmp fo::funcoffs::exit_inventory_;
+	}
+}
+
+static __declspec(naked) void UseInventoryOnHook_Start() {
+	__asm {
+		_InLoop2(1, INTFACEUSE);
+		xor eax, eax;
+		jmp fo::funcoffs::inven_set_mouse_;
+	}
+}
+
+static __declspec(naked) void UseInventoryOnHook_End() {
+	__asm {
+		_InLoop2(0, INTFACEUSE);
+		mov eax, edi;
+		jmp fo::funcoffs::exit_inventory_;
+	}
+}
+
+static __declspec(naked) void LootContainerHook_Start() {
+	__asm {
+		_InLoop2(1, INTFACELOOT);
+		xor eax, eax;
+		jmp fo::funcoffs::inven_set_mouse_;
+	}
+}
+
 //static __declspec(naked) void LootContainerHook_End() {
 //	__asm {
 //		cmp  dword ptr [esp + 0x150 - 0x58 + 4], 0; // JESSE_CONTAINER
@@ -693,7 +695,7 @@
 //		retn 0x13C;
 //	}
 //}
-//
+
 //static __declspec(naked) void BarterInventoryHook() {
 //	__asm {
 //		and inLoop, ~SPECIAL; // unset flag after animating the dialog panel
@@ -705,92 +707,92 @@
 //		retn 4;
 //	}
 //}
-//
-//static __declspec(naked) void AutomapHook_Start() {
-//	__asm {
-//		call fo::funcoffs::gmouse_set_cursor_;
-//		test edx, edx;
-//		jnz  skip;
-//		mov  LoadGameHook::interfaceWID, ebp;
-//		_InLoop(1, AUTOMAP);
-//skip:
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void AutomapHook_End() {
-//	__asm {
-//		_InLoop(0, AUTOMAP);
-//		mov LoadGameHook::interfaceWID, -1
-//		jmp fo::funcoffs::win_delete_;
-//	}
-//}
-//
-//static __declspec(naked) void DialogReviewInitHook() {
-//	__asm {
-//		call fo::funcoffs::gdReviewInit_;
-//		test eax, eax;
-//		jnz  error;
-//		push ecx;
-//		_InLoop2(1, DIALOGVIEW);
-//		pop ecx;
-//		xor eax, eax;
-//error:
-//		retn;
-//	}
-//}
-//
-//static __declspec(naked) void DialogReviewExitHook() {
-//	__asm {
-//		push ecx;
-//		push eax;
-//		_InLoop2(0, DIALOGVIEW);
-//		pop eax;
-//		pop ecx;
-//		jmp fo::funcoffs::gdReviewExit_;
-//	}
-//}
-//
-//static __declspec(naked) void setup_move_timer_win_Hook() {
-//	__asm {
-//		_InLoop2(1, COUNTERWIN);
-//		jmp fo::funcoffs::text_curr_;
-//	}
-//}
-//
-//static __declspec(naked) void exit_move_timer_win_Hook() {
-//	__asm {
-//		push eax;
-//		_InLoop2(0, COUNTERWIN);
-//		pop  eax;
-//		jmp  fo::funcoffs::win_delete_;
-//	}
-//}
-//
-//static __declspec(naked) void gdialog_bk_hook() {
-//	__asm {
-//		_InLoop2(1, SPECIAL); // set the flag before switching from dialog mode to barter
-//		jmp fo::funcoffs::gdialog_window_destroy_;
-//	}
-//}
-//
-//static __declspec(naked) void gdialogUpdatePartyStatus_hook1() {
-//	__asm {
-//		push edx;
-//		_InLoop2(1, SPECIAL); // set the flag before animating the dialog panel when a party member joins/leaves
-//		pop  edx;
-//		jmp  fo::funcoffs::gdialog_window_destroy_;
-//	}
-//}
-//
-//static __declspec(naked) void gdialogUpdatePartyStatus_hook0() {
-//	__asm {
-//		call fo::funcoffs::gdialog_window_create_;
-//		_InLoop2(0, SPECIAL); // unset the flag when entering the party member control panel
-//		retn;
-//	}
-//}
-//
+
+static __declspec(naked) void AutomapHook_Start() {
+	__asm {
+		call fo::funcoffs::gmouse_set_cursor_;
+		test edx, edx;
+		jnz  skip;
+		mov  LoadGameHook::interfaceWID, ebp;
+		_InLoop(1, AUTOMAP);
+skip:
+		retn;
+	}
+}
+
+static __declspec(naked) void AutomapHook_End() {
+	__asm {
+		_InLoop(0, AUTOMAP);
+		mov LoadGameHook::interfaceWID, -1
+		jmp fo::funcoffs::win_delete_;
+	}
+}
+
+static __declspec(naked) void DialogReviewInitHook() {
+	__asm {
+		call fo::funcoffs::gdReviewInit_;
+		test eax, eax;
+		jnz  error;
+		push ecx;
+		_InLoop2(1, DIALOGVIEW);
+		pop ecx;
+		xor eax, eax;
+error:
+		retn;
+	}
+}
+
+static __declspec(naked) void DialogReviewExitHook() {
+	__asm {
+		push ecx;
+		push eax;
+		_InLoop2(0, DIALOGVIEW);
+		pop eax;
+		pop ecx;
+		jmp fo::funcoffs::gdReviewExit_;
+	}
+}
+
+static __declspec(naked) void setup_move_timer_win_Hook() {
+	__asm {
+		_InLoop2(1, COUNTERWIN);
+		jmp fo::funcoffs::text_curr_;
+	}
+}
+
+static __declspec(naked) void exit_move_timer_win_Hook() {
+	__asm {
+		push eax;
+		_InLoop2(0, COUNTERWIN);
+		pop  eax;
+		jmp  fo::funcoffs::win_delete_;
+	}
+}
+
+static __declspec(naked) void gdialog_bk_hook() {
+	__asm {
+		_InLoop2(1, SPECIAL); // set the flag before switching from dialog mode to barter
+		jmp fo::funcoffs::gdialog_window_destroy_;
+	}
+}
+
+static __declspec(naked) void gdialogUpdatePartyStatus_hook1() {
+	__asm {
+		push edx;
+		_InLoop2(1, SPECIAL); // set the flag before animating the dialog panel when a party member joins/leaves
+		pop  edx;
+		jmp  fo::funcoffs::gdialog_window_destroy_;
+	}
+}
+
+static __declspec(naked) void gdialogUpdatePartyStatus_hook0() {
+	__asm {
+		call fo::funcoffs::gdialog_window_create_;
+		_InLoop2(0, SPECIAL); // unset the flag when entering the party member control panel
+		retn;
+	}
+}
+
 //void LoadGameHook::init() {
 //	saveInCombatFix = IniReader::GetConfigInt("Misc", "SaveInCombatFix", 1);
 //	if (saveInCombatFix > 2) saveInCombatFix = 0;
@@ -875,57 +877,57 @@
 //
 //	HookCall(0x443482, PauseWindowHook);
 //}
-//
-//Delegate<>& LoadGameHook::OnBeforeGameInit() {
-//	return onBeforeGameInit;
-//}
-//
-//Delegate<>& LoadGameHook::OnGameInit() {
-//	return onGameInit;
-//}
-//
-//Delegate<>& LoadGameHook::OnAfterGameInit() {
-//	return onAfterGameInit;
-//}
-//
-//Delegate<>& LoadGameHook::OnGameExit() {
-//	return onGameExit;
-//}
-//
-//Delegate<>& LoadGameHook::OnGameReset() {
-//	return onGameReset;
-//}
-//
-//Delegate<>& LoadGameHook::OnBeforeGameStart() {
-//	return onBeforeGameStart;
-//}
-//
-//Delegate<>& LoadGameHook::OnAfterGameStarted() {
-//	return onAfterGameStarted;
-//}
-//
-//Delegate<>& LoadGameHook::OnAfterNewGame() {
-//	return onAfterNewGame;
-//}
-//
-//Delegate<DWORD>& LoadGameHook::OnGameModeChange() {
-//	return onGameModeChange;
-//}
-//
-//Delegate<>& LoadGameHook::OnBeforeGameClose() {
-//	return onBeforeGameClose;
-//}
-//
-//Delegate<>& LoadGameHook::OnCombatStart() {
-//	return onCombatStart;
-//}
-//
-//Delegate<>& LoadGameHook::OnCombatEnd() {
-//	return onCombatEnd;
-//}
-//
-//Delegate<>& LoadGameHook::OnBeforeMapLoad() {
-//	return onBeforeMapLoad;
-//}
-//
-//}
+
+Delegate<>& LoadGameHook::OnBeforeGameInit() {
+	return onBeforeGameInit;
+}
+
+Delegate<>& LoadGameHook::OnGameInit() {
+	return onGameInit;
+}
+
+Delegate<>& LoadGameHook::OnAfterGameInit() {
+	return onAfterGameInit;
+}
+
+Delegate<>& LoadGameHook::OnGameExit() {
+	return onGameExit;
+}
+
+Delegate<>& LoadGameHook::OnGameReset() {
+	return onGameReset;
+}
+
+Delegate<>& LoadGameHook::OnBeforeGameStart() {
+	return onBeforeGameStart;
+}
+
+Delegate<>& LoadGameHook::OnAfterGameStarted() {
+	return onAfterGameStarted;
+}
+
+Delegate<>& LoadGameHook::OnAfterNewGame() {
+	return onAfterNewGame;
+}
+
+Delegate<DWORD>& LoadGameHook::OnGameModeChange() {
+	return onGameModeChange;
+}
+
+Delegate<>& LoadGameHook::OnBeforeGameClose() {
+	return onBeforeGameClose;
+}
+
+Delegate<>& LoadGameHook::OnCombatStart() {
+	return onCombatStart;
+}
+
+Delegate<>& LoadGameHook::OnCombatEnd() {
+	return onCombatEnd;
+}
+
+Delegate<>& LoadGameHook::OnBeforeMapLoad() {
+	return onBeforeMapLoad;
+}
+
+}

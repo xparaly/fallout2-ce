@@ -23,6 +23,7 @@
 #include "Module.h"
 #include <string>
 #include <vector>
+#include <Windows.h>
 
 namespace sfall
 {

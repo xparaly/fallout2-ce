@@ -23,6 +23,10 @@ namespace fallout {
 // 365 * 24 * 60 * 60 * 10
 #define GAME_TIME_TICKS_PER_YEAR (315360000)
 
+
+
+
+
 typedef enum ScriptRequests {
     SCRIPT_REQUEST_COMBAT = 0x01,
     SCRIPT_REQUEST_TOWN_MAP = 0x02,
@@ -77,6 +81,12 @@ typedef enum ScriptProc {
     SCRIPT_PROC_COMBAT_IS_OVER = 27,
     SCRIPT_PROC_COUNT,
 } ScriptProc;
+
+typedef struct {
+    fallout::Program* ptr = nullptr;
+    int procLookup[fallout::ScriptProc::SCRIPT_PROC_COUNT];
+    bool initialized;
+} ScriptProgram;
 
 typedef struct Script {
     // scr_id

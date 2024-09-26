@@ -53,7 +53,7 @@ public:
 	static long GetScriptReturnValue();
 	static long GetResetScriptReturnValue();
 
-	static void AddProgramToMap(ScriptProgram &prog);
+	static void AddProgramToMap(fallout::ScriptProgram &prog);
 	static ScriptProgram* GetGlobalScriptProgram(fo::Program* scriptPtr);
 
 	static void AddTimerEventScripts(fo::Program* script, long time, long param);
@@ -103,18 +103,18 @@ void __fastcall SetSelfObject(fo::Program* script, fo::GameObject* obj);
 // prog - reference to program structure
 // fileName - the script file name without extension (if fullPath is false) or a full file path (if fullPath is true)
 // fullPath - controls how fileName is used (see above)
-void InitScriptProgram(ScriptProgram &prog, const char* fileName, bool fullPath = false);
+void InitScriptProgram(fallout::ScriptProgram &prog, const char* fileName, bool fullPath = false);
 
 // init program after load, needs to be called once
-void RunScriptProgram(ScriptProgram &prog);
+void RunScriptProgram(fallout::ScriptProgram &prog);
 
 // execute script by specific proc name
-void RunScriptProc(ScriptProgram* prog, const char* procName);
+void RunScriptProc(fallout::ScriptProgram* prog, const char* procName);
 
 // execute script proc by procId from define.h
-void RunScriptProc(ScriptProgram* prog, long procId);
+void RunScriptProc(fallout::ScriptProgram* prog, long procId);
 
-int RunScriptStartProc(ScriptProgram* prog);
+int RunScriptStartProc(fallout::ScriptProgram* prog);
 
 // variables
 extern DWORD availableGlobalScriptTypes;

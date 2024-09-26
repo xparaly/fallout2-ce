@@ -149,7 +149,7 @@ bool HookScripts::HookHasScript(int hookId) {
 	return (!hooks[hookId].empty());
 }
 
-void HookScripts::RegisterHook(fo::Program* script, int id, int procNum, bool specReg) {
+void HookScripts::RegisterHook(fallout::Program* script, int id, int procNum, bool specReg) {
 	if (id >= numHooks || injectHooks[id].id < 0) return;
 	for (std::vector<HookScript>::iterator it = hooks[id].begin(); it != hooks[id].end(); ++it) {
 		if (it->prog.ptr == script) {
@@ -159,9 +159,10 @@ void HookScripts::RegisterHook(fo::Program* script, int id, int procNum, bool sp
 	}
 	if (procNum == 0) return; // prevent registration to first location in procedure when reusing "unregister" method
 
-	ScriptProgram *prog = ScriptExtender::GetGlobalScriptProgram(script);
+	fallout::ScriptProgram* prog = nullptr;
+    //ScriptProgram* prog = ScriptExtender::GetGlobalScriptProgram(script);
 	if (prog) {
-		dlog_f("Script: %s registered as hook ID %d\n", DL_HOOK, script->fileName, id);
+		dlog_f("Script: %s registered as hook ID %d\n", DL_HOOK, script->name, id);
 		HookScript hook;
 		hook.prog = *prog;
 		hook.callback = procNum;
@@ -206,7 +207,7 @@ void HookScripts::LoadHookScript(const char* name, int id) {
 }
 
 static void InitHookScriptFile(const char* name, int id) {
-	ScriptProgram prog;
+	fallout::ScriptProgram prog;
 	dlog("> ", DL_HOOK);
 	dlog(name, DL_HOOK);
 	InitScriptProgram(prog, name);
