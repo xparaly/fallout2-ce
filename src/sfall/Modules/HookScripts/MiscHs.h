@@ -19,7 +19,7 @@ void Inject_ExplosiveTimerHook();
 void Inject_EncounterHook();
 void Inject_RollCheckHook();
 
-long PerceptionRangeHook_Invoke(fo::GameObject* watcher, fo::GameObject* target, long type, long result);
+long PerceptionRangeHook_Invoke(fallout::Object* watcher, fallout::Object* target, long type, long result);
 
 void BarterPriceHook_GetLastCosts(long& outPcTableCost, long& outNpcTableCost);
 

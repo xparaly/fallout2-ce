@@ -13,7 +13,7 @@ void Inject_MoveCostHook();
 void Inject_InventoryMoveHook();
 void Inject_InvenWieldHook();
 
-long InvenWieldHook_Invoke(fo::GameObject* critter, fo::GameObject* item, long flags);
+long InvenWieldHook_Invoke(fallout::Object* critter, fallout::Object* item, long flags);
 
 void InvenUnwield_HookDrop();
 void InvenUnwield_HookMove();

@@ -20,9 +20,11 @@
 #define VARIABLES_H
 
 #include <cassert>
-#include <Windows.h>
+//#include <Windows.h>
 
+#include "..\..\to_move_somewhere_else.h"
 #include "VariableOffsets.h"
+
 //#include "Structs.h"
 
 //
@@ -83,24 +85,30 @@ struct ArrayWrapper {
 // TODO: assign appropriate types (arrays, structs, strings, etc.) for all variables
 #include "Variables_def.h"
 
+//__inline long getInt(fallout::DWORD addr)
+//    {
+//        return *reinterpret_cast<fallout::DWORD*>(addr);
+//    }
+//
+//    __inline BYTE getByte(fallout::DWORD addr)
+//    {
+//        return *reinterpret_cast<BYTE*>(addr);
+//    }
+//
+//    __inline long& setInt(fallout::DWORD addr)
+//    {
+//        return *reinterpret_cast<long*>(addr);
+//    }
+//
+//    __inline BYTE& setByte(fallout::DWORD addr)
+//    {
+//        return *reinterpret_cast<BYTE*>(addr);
+//    }
 
-__inline long getInt(DWORD addr) {
-	return *reinterpret_cast<DWORD*>(addr);
-}
-
-__inline BYTE getByte(DWORD addr) {
-	return *reinterpret_cast<BYTE*>(addr);
-}
-
-__inline long& setInt(DWORD addr) {
-	return *reinterpret_cast<long*>(addr);
-}
-
-__inline BYTE& setByte(DWORD addr) {
-	return *reinterpret_cast<BYTE*>(addr);
-}
 
 } // var
 } // fo
+
+
 
 #endif /* VARIABLES_H*/

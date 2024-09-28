@@ -1,9 +1,7 @@
 #ifndef TO_MOVE_SOMEWHERE_ELSE_H
 #define TO_MOVE_SOMEWHERE_ELSE_H
 
-//#include <string>
-//#include <algorithm>
-#include <Windows.h>
+//#include <Windows.h>
 
 // global flag, indicating that debugging features of Sfall are enabled
 #ifndef NO_SFALL_DEBUG
@@ -15,7 +13,15 @@
 //#define min(a, b) (((a) < (b)) ? (a) : (b))
 
 namespace fallout {
-//    typedef unsigned long DWORD;
+    typedef unsigned long DWORD;
+
+    enum class DataType : DWORD {
+        NONE = 0,
+        INT = 1,
+        FLOAT = 2,
+        STR = 3,
+    }; 
+
 }
 
 namespace sfall {
@@ -79,13 +85,6 @@ namespace Fields {
 
 
 
-//enum class DataType : DWORD {
-//    NONE = 0,
-//    INT = 1,
-//    FLOAT = 2,
-//    STR = 3,
-//}; 
-
 
 
 
@@ -93,10 +92,33 @@ namespace Fields {
 #define pushadc __asm push eax __asm push edx __asm push ecx
 #define popadc __asm pop ecx __asm pop edx __asm pop eax
 
-__inline long getInt(DWORD addr)
+
+__inline long getInt(fallout::DWORD addr)
 {
-    return *reinterpret_cast<DWORD*>(addr);
+    return *reinterpret_cast<fallout::DWORD*>(addr);
 }
+
+//__inline BYTE getByte(fallout::DWORD addr)
+//{
+//    return *reinterpret_cast<BYTE*>(addr);
+//}
+//
+//__inline long& setInt(fallout::DWORD addr)
+//{
+//    return *reinterpret_cast<long*>(addr);
+//}
+//
+//__inline BYTE& setByte(fallout::DWORD addr)
+//{
+//    return *reinterpret_cast<BYTE*>(addr);
+//}
+
+
+
+//__inline long getInt(fallout::DWORD addr)
+//{
+//    return *reinterpret_cast<fallout::DWORD*>(addr);
+//}
 
 } // namespace sfall
 

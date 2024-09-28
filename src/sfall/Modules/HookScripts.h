@@ -23,7 +23,7 @@
 #include "Module.h"
 #include <string>
 #include <vector>
-#include <Windows.h>
+//#include <Windows.h>
 
 namespace sfall
 {
@@ -95,7 +95,7 @@ public:
 	const char* name() { return "HookScripts"; }
 	void init();
 
-	static DWORD initingHookScripts;
+	static fallout::DWORD initingHookScripts;
 
 	static std::vector<HookFile> hookScriptFilesList;
 
@@ -113,7 +113,7 @@ public:
 	//static void RegisterHook(fo::Program* script, int id, int procNum, bool specReg);
     static void RegisterHook(fallout::Program* script, int id, int procNum, bool specReg);
 
-	static void RunHookScriptsAtProc(DWORD procId);
+	static void RunHookScriptsAtProc(fallout::DWORD procId);
 };
 
 }

@@ -12,6 +12,7 @@ typedef enum Roll {
     ROLL_CRITICAL_SUCCESS,
 } Roll;
 
+extern int randomTranslateRoll(int delta, int criticalSuccessModifier);
 void randomInit();
 void randomReset();
 void randomExit();

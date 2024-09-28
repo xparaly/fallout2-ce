@@ -19,29 +19,30 @@
 #pragma once
 
 #include "Module.h"
+#include "..\..\obj_types.h"
 
-//namespace sfall
-//{
-//
-//class PartyControl : public Module {
-//public:
-//	const char* name() { return "PartyControl"; }
-//	void init();
-//	void exit() override;
-//
-//	static int __fastcall SwitchHandHook(fo::GameObject* item);
-//
-//	static bool IsNpcControlled();
-//
-//	// Take control of given NPC or switch back to "Real" dude if nullptr is passed
-//	static void SwitchToCritter(fo::GameObject* critter);
-//
-//	// Returns pointer to "real" dude, which is different from "dude_obj" when controlling another critter
-//	static fo::GameObject* RealDudeObject();
-//
-//	static void OrderAttackPatch();
-//};
-//
-//extern bool npcEngineLevelUp;
-//
-//}
+namespace sfall
+{
+
+class PartyControl : public Module {
+public:
+	const char* name() { return "PartyControl"; }
+	void init();
+	void exit() override;
+
+	static int __fastcall SwitchHandHook(fallout::Object* item);
+
+	static bool IsNpcControlled();
+
+	// Take control of given NPC or switch back to "Real" dude if nullptr is passed
+        static void SwitchToCritter(fallout::Object* critter);
+
+	// Returns pointer to "real" dude, which is different from "dude_obj" when controlling another critter
+	static fallout::Object* RealDudeObject();
+
+	static void OrderAttackPatch();
+};
+
+extern bool npcEngineLevelUp;
+
+}

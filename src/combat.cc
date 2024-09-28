@@ -79,16 +79,16 @@ typedef struct UnarmedHitDescription {
     bool isSecondary;
 } UnarmedHitDescription;
 
-typedef struct DamageCalculationContext {
-    Attack* attack;
-    int* damagePtr;
-    int ammoQuantity;
-    int damageResistance;
-    int damageThreshold;
-    int damageBonus;
-    int bonusDamageMultiplier;
-    int combatDifficultyDamageModifier;
-} DamageCalculationContext;
+//typedef struct DamageCalculationContext {
+//    Attack* attack;
+//    int* damagePtr;
+//    int ammoQuantity;
+//    int damageResistance;
+//    int damageThreshold;
+//    int damageBonus;
+//    int bonusDamageMultiplier;
+//    int combatDifficultyDamageModifier;
+//} DamageCalculationContext;
 
 static bool _combat_safety_invalidate_weapon_func(Object* attacker, Object* weapon, int hitMode, Object* defender, int* safeDistancePtr, Object* attackerFriend);
 static void _combatInitAIInfoList();
@@ -105,7 +105,7 @@ static void _combat_sequence();
 static void combatAttemptEnd();
 static int _combat_input();
 static void _combat_set_move_all();
-static int _combat_turn(Object* a1, bool a2);
+//static int _combat_turn(Object* a1, bool a2);
 static bool _combat_should_end();
 static bool _check_ranged_miss(Attack* attack);
 static int _shoot_along_path(Attack* attack, int endTile, int rounds, int anim);
@@ -141,9 +141,9 @@ static void unarmedInitVanilla();
 static void unarmedInitCustom();
 static int unarmedGetHitModeInRange(int firstHitMode, int lastHitMode, bool isSecondary);
 static void damageModInit();
-static void damageModCalculateGlovz(DamageCalculationContext* context);
+void damageModCalculateGlovz(DamageCalculationContext* context);
 static int damageModGlovzDivRound(int dividend, int divisor);
-static void damageModCalculateYaam(DamageCalculationContext* context);
+void damageModCalculateYaam(DamageCalculationContext* context);
 
 // 0x500B50
 static char _a_1[] = ".";
@@ -1864,7 +1864,7 @@ static CriticalHitDescription gPlayerCriticalHitTable[HIT_LOCATION_COUNT][CRTICI
 };
 
 // 0x517F98
-static int _combat_end_due_to_load = 0;
+int _combat_end_due_to_load = 0;
 
 // 0x517F9C
 static bool _combat_cleanup_enabled = false;
@@ -1983,7 +1983,7 @@ static int gBurstModCenterDivisor = SFALL_CONFIG_BURST_MOD_DEFAULT_CENTER_DIVISO
 static int gBurstModTargetMultiplier = SFALL_CONFIG_BURST_MOD_DEFAULT_TARGET_MULTIPLIER;
 static int gBurstModTargetDivisor = SFALL_CONFIG_BURST_MOD_DEFAULT_TARGET_DIVISOR;
 static UnarmedHitDescription gUnarmedHitDescriptions[HIT_MODE_COUNT];
-static int gDamageCalculationType;
+int gDamageCalculationType;
 static bool gBonusHthDamageFix;
 static bool gDisplayBonusDamage;
 
@@ -3222,7 +3222,7 @@ static void _combat_set_move_all()
 }
 
 // 0x42299C
-static int _combat_turn(Object* obj, bool a2)
+int _combat_turn(Object* obj, bool a2)
 {
     _combat_turn_obj = obj;
 
@@ -6657,7 +6657,7 @@ bool damageModGetDisplayBonusDamage()
     return gDisplayBonusDamage;
 }
 
-static void damageModCalculateGlovz(DamageCalculationContext* context)
+void damageModCalculateGlovz(DamageCalculationContext* context)
 {
     int ammoX = weaponGetAmmoDamageMultiplier(context->attack->weapon);
     if (ammoX <= 0) {
@@ -6762,7 +6762,7 @@ static int damageModGlovzDivRound(int dividend, int divisor)
     return quotient;
 }
 
-static void damageModCalculateYaam(DamageCalculationContext* context)
+void damageModCalculateYaam(DamageCalculationContext* context)
 {
     int damageMultiplier = context->bonusDamageMultiplier * weaponGetAmmoDamageMultiplier(context->attack->weapon);
     int damageDivisor = weaponGetAmmoDamageDivisor(context->attack->weapon);
@@ -6840,4 +6840,17 @@ Attack* combat_get_data()
     return &_main_ctd;
 }
 
+long Combat::determineHitChance; // the value of hit chance w/o any cap
+static std::vector<ChanceModifier> hitChanceMods;
+static ChanceModifier baseHitChance;
+//static int __fastcall HitChanceMod(int base, Object* critter)
+//{
+//    Combat::determineHitChance = base;
+//    for (size_t i = 0; i < hitChanceMods.size(); i++) {
+//        if (critter->id == hitChanceMods[i].id) {
+//            return min(base + hitChanceMods[i].mod, hitChanceMods[i].maximum);
+//        }
+//    }
+//    return min(base + baseHitChance.mod, baseHitChance.maximum);
+//}
 } // namespace fallout

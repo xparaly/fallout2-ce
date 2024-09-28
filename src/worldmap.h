@@ -237,6 +237,8 @@ typedef enum Map {
 
 extern unsigned char* circleBlendTable;
 
+extern int wmInterfaceRefresh();
+
 int wmWorldMap_init();
 void wmWorldMap_exit();
 int wmWorldMap_reset();

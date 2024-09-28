@@ -5,6 +5,7 @@
 #include "db.h"
 #include "obj_types.h"
 #include "proto_types.h"
+#include "sfall\Modules\module.h"
 
 namespace fallout {
 
@@ -12,6 +13,65 @@ extern int _combatNumTurns;
 extern unsigned int gCombatState;
 
 extern int _combat_free_move;
+
+struct ChanceModifier {
+    long id;
+    int maximum;
+    int mod;
+
+    ChanceModifier()
+        : id(0)
+        , maximum(95)
+        , mod(0)
+    {
+    }
+
+    ChanceModifier(long _id, int max, int _mod)
+    {
+        id = _id;
+        maximum = max;
+        mod = _mod;
+    }
+
+    void SetDefault()
+    {
+        maximum = 95;
+        mod = 0;
+    }
+};
+
+class Combat : public sfall::Module {
+public:
+    const char* name() { return "Combat"; }
+    void init();
+
+    static long determineHitChance; // the value of hit chance w/o any cap
+
+    // static bool IsBurstDisabled(fo::GameObject* critter);
+};
+
+static int __fastcall HitChanceMod(int base, Object* critter);
+
+typedef struct DamageCalculationContext {
+    Attack* attack;
+    int* damagePtr;
+    int ammoQuantity;
+    int damageResistance;
+    int damageThreshold;
+    int damageBonus;
+    int bonusDamageMultiplier;
+    int combatDifficultyDamageModifier;
+} DamageCalculationContext;
+
+extern void damageModCalculateGlovz(DamageCalculationContext* context);
+extern void damageModCalculateYaam(DamageCalculationContext* context);
+
+extern int gDamageCalculationType;
+int attackDetermineToHit(Object* attacker, int tile, Object* defender, int hitLocation, int hitMode, bool useDistance);
+extern void attackComputeDamage(Attack* attack, int ammoQuantity, int a3);
+int _combat_turn(Object* a1, bool a2);
+extern int _combat_end_due_to_load;
+// Object* _combat_turn_obj;
 
 int combatInit();
 void combatReset();

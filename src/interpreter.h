@@ -244,6 +244,8 @@ ProgramValue programReturnStackPopValue(Program* program);
 int programReturnStackPopInteger(Program* program);
 void* programReturnStackPopPointer(Program* program);
 
+extern int gInterfaceCurrentHand;
+
 } // namespace fallout
 
 #endif /* INTERPRETER_H */

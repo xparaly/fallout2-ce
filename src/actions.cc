@@ -75,8 +75,8 @@ static const int gMaximumBloodDeathAnimations[DAMAGE_TYPE_COUNT] = {
 
 static int actionKnockdown(Object* obj, int* anim, int maxDistance, int rotation, int delay);
 static int _action_blood(Object* obj, int anim, int delay);
-static int _pick_death(Object* attacker, Object* defender, Object* weapon, int damage, int attackerAnimation, bool hitFromFront);
-static int _check_death(Object* obj, int anim, int minViolenceLevel, bool hitFromFront);
+int _pick_death(Object* attacker, Object* defender, Object* weapon, int damage, int attackerAnimation, bool hitFromFront);
+int _check_death(Object* obj, int anim, int minViolenceLevel, bool hitFromFront);
 static int _internal_destroy(Object* a1, Object* a2);
 static void _show_damage_to_object(Object* defender, int damage, int flags, Object* weapon, bool hitFromFront, int knockbackDistance, int knockbackRotation, int attackerAnimation, Object* attacker, int delay);
 static int _show_death(Object* obj, int anim);

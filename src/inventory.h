@@ -6,11 +6,20 @@
 namespace fallout {
 
 typedef void InventoryPrintItemDescriptionHandler(char* string);
-
+extern Object* gInventoryArmor;
+extern int gInventoryWindowDudeFid;
+extern int _curr_stack;
+extern bool _dropped_explosive;
+extern int _drop_into_container(Object*, Object*, int, Object**, int);
+void _switch_hand(Object* a1, Object** a2, Object** a3, int a4);
 void _inven_reset_dude();
 void inventoryOpen();
 void _adjust_ac(Object* critter, Object* oldArmor, Object* newArmor);
 void inventoryOpenUseItemOn(Object* a1);
+extern int _barter_compute_value(Object* a1, Object* a2);
+extern Object* _btable;
+extern Object* _ptable;
+extern Object* _target_stack[10];
 Object* critterGetItem2(Object* obj);
 Object* critterGetItem1(Object* obj);
 Object* critterGetArmor(Object* obj);

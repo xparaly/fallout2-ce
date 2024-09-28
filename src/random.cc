@@ -13,7 +13,7 @@
 namespace fallout {
 
 static int _roll_reset_();
-static int randomTranslateRoll(int delta, int criticalSuccessModifier);
+int randomTranslateRoll(int delta, int criticalSuccessModifier);
 static int getRandom(int max);
 static int randomInt32();
 static void randomSeedPrerandomInternal(int seed);
@@ -98,7 +98,7 @@ int randomRoll(int difficulty, int criticalSuccessModifier, int* howMuchPtr)
 // criticals (starting from day 2).
 //
 // 0x4A3030
-static int randomTranslateRoll(int delta, int criticalSuccessModifier)
+int randomTranslateRoll(int delta, int criticalSuccessModifier)
 {
     unsigned int gameTime = gameTimeGetTime();
 

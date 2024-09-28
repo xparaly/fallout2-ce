@@ -122,13 +122,6 @@ typedef enum CritterState {
     CRITTER_STATE_PRONE = 0x02,
 } CritterState;
 
-enum {
-    INVEN_TYPE_WORN = 0,
-    INVEN_TYPE_RIGHT_HAND = 1,
-    INVEN_TYPE_LEFT_HAND = 2,
-    INVEN_TYPE_INV_COUNT = -2,
-};
-
 typedef enum FloatingMessageType {
     FLOATING_MESSAGE_TYPE_WARNING = -2,
     FLOATING_MESSAGE_TYPE_COLOR_SEQUENCE = -1,
@@ -157,7 +150,6 @@ typedef enum OpRegAnimFunc {
 static void scriptPredefinedError(Program* program, const char* name, int error);
 static void scriptError(const char* format, ...);
 static int tileIsVisible(int tile);
-static int _correctFidForRemovedItem(Object* a1, Object* a2, int a3);
 static void opGiveExpPoints(Program* program);
 static void opScrReturn(Program* program);
 static void opPlaySfx(Program* program);
@@ -413,7 +405,7 @@ static int tileIsVisible(int tile)
 }
 
 // 0x45409C
-static int _correctFidForRemovedItem(Object* a1, Object* a2, int flags)
+int _correctFidForRemovedItem(Object* a1, Object* a2, int flags)
 {
     if (a1 == gDude) {
         bool animated = !gameUiIsDisabled();

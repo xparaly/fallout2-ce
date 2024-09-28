@@ -5,8 +5,8 @@
 #include "..\..\FalloutEngine\Functions.h"
 #include "Common.h"
 
-using namespace sfall::script;
-
+//using namespace sfall::script;
+//using namespace fallout;
 namespace sfall
 {
 
@@ -15,33 +15,33 @@ constexpr int maxRets = 8;  // Maximum number of return values
 constexpr int maxDepth = 8; // Maximum recursion depth for hook calls
 
 struct {
-	DWORD hookID;
+	fallout::DWORD hookID;
 	bool allowNonIntReturn;
-	DWORD argCount;
-	DWORD cArg;
-	DWORD cRet;
-	DWORD cRetTmp;
-	DWORD args[maxArgs];
-	DWORD rets[maxRets];
-	DataType retTypes[maxRets];
+	fallout::DWORD argCount;
+	fallout::DWORD cArg;
+	fallout::DWORD cRet;
+	fallout::DWORD cRetTmp;
+	fallout::DWORD args[maxArgs];
+	fallout::DWORD rets[maxRets];
+	fallout::DataType retTypes[maxRets];
 } savedArgs[maxDepth];
 
-static DWORD callDepth;
-static DWORD currentRunHook = -1;
+static fallout::DWORD callDepth;
+static fallout::DWORD currentRunHook = -1;
 
 bool allowNonIntReturn;
 fallout::opcode_t retTypes[maxRets]; // current hook return value types
-DWORD args[maxArgs]; // current hook arguments
-DWORD rets[maxRets]; // current hook return values
+fallout::DWORD args[maxArgs]; // current hook arguments
+fallout::DWORD rets[maxRets]; // current hook return values
 
-DWORD argCount;
-DWORD cArg;    // how many arguments were taken by current hook script
-DWORD cRet;    // how many return values were set by current hook script
-DWORD cRetTmp; // how many return values were set by specific hook script (when using register_hook)
+fallout::DWORD argCount;
+fallout::DWORD cArg;    // how many arguments were taken by current hook script
+fallout::DWORD cRet;    // how many return values were set by current hook script
+fallout::DWORD cRetTmp; // how many return values were set by specific hook script (when using register_hook)
 
 std::vector<HookScript> hooks[HOOK_COUNT];
 
-DWORD HookCommon::GetHSArgCount() {
+fallout::DWORD HookCommon::GetHSArgCount() {
 	return argCount;
 }
 
@@ -49,13 +49,13 @@ fallout::ProgramValue HookCommon::GetHSArg() {
 	return (cArg == argCount) ? 0 : GetHSArgAt(cArg++);
 }
 
-void HookCommon::SetHSArg(DWORD id, const fallout::ProgramValue& value) {
+void HookCommon::SetHSArg(fallout::DWORD id, const fallout::ProgramValue& value) {
 	if (id < argCount) {
         args[id] = value.asRawValue();
 	}
 }
 
-fallout::ProgramValue HookCommon::GetHSArgAt(DWORD id)
+fallout::ProgramValue HookCommon::GetHSArgAt(fallout::DWORD id)
 {
 	return args[id];
 }
@@ -75,7 +75,7 @@ void HookCommon::SetHSReturn(const fallout::ProgramValue& value)
 }
 
 // List of hooks that are not allowed to be called recursively
-static bool CheckRecursiveHooks(DWORD hook) {
+static bool CheckRecursiveHooks(fallout::DWORD hook) {
 	if (hook == currentRunHook) {
 		switch (hook) {
 		case HOOK_SETGLOBALVAR:
@@ -98,10 +98,10 @@ void __stdcall BeginHook() {
 		savedArgs[cDepth].cArg = cArg;                                             // current count of taken arguments
 		savedArgs[cDepth].cRet = cRet;                                             // number of return values for the current hook
 		savedArgs[cDepth].cRetTmp = cRetTmp;
-		std::memcpy(&savedArgs[cDepth].args, args, maxArgs * sizeof(DWORD));            // values of the arguments
+		std::memcpy(&savedArgs[cDepth].args, args, maxArgs * sizeof(fallout::DWORD));            // values of the arguments
 		if (cRet) {
-			std::memcpy(&savedArgs[cDepth].rets, rets, maxRets * sizeof(DWORD));            // return values
-			std::memcpy(&savedArgs[cDepth].retTypes, retTypes, maxRets * sizeof(DataType)); // return value types
+			std::memcpy(&savedArgs[cDepth].rets, rets, maxRets * sizeof(fallout::DWORD));            // return values
+			std::memcpy(&savedArgs[cDepth].retTypes, retTypes, maxRets * sizeof(fallout::DataType)); // return value types
 		}
 
 		//devlog_f("\nSaved cArgs/cRet: %d / %d(%d)\n", DL_HOOK, savedArgs[cDepth].argCount, savedArgs[cDepth].cRet, cRetTmp);
@@ -125,7 +125,7 @@ static void __stdcall RunSpecificHookScript(HookScript *hook) {
 	}
 }
 
-void __stdcall RunHookScript(DWORD hook) {
+void __stdcall RunHookScript(fallout::DWORD hook) {
 	cRet = 0;
 	if (!hooks[hook].empty()) {
 		if (callDepth > 1) {
@@ -168,10 +168,10 @@ void __stdcall EndHook() {
 			cArg = savedArgs[cDepth].cArg;
 			cRet = savedArgs[cDepth].cRet;
 			cRetTmp = savedArgs[cDepth].cRetTmp;  // also restore current count of the number of return values
-			std::memcpy(args, &savedArgs[cDepth].args, maxArgs * sizeof(DWORD));
+			std::memcpy(args, &savedArgs[cDepth].args, maxArgs * sizeof(fallout::DWORD));
 			if (cRet > 0) {
-				std::memcpy(rets, &savedArgs[cDepth].rets, maxRets * sizeof(DWORD));
-				std::memcpy(retTypes, &savedArgs[cDepth].retTypes, maxRets * sizeof(DataType));
+				std::memcpy(rets, &savedArgs[cDepth].rets, maxRets * sizeof(fallout::DWORD));
+				std::memcpy(retTypes, &savedArgs[cDepth].retTypes, maxRets * sizeof(fallout::DataType));
 			}
 
 			//devlog_f("Restored cArgs/cRet: %d / %d(%d)\n", DL_HOOK, argCount, cRet, cRetTmp);
@@ -185,13 +185,13 @@ void __stdcall EndHook() {
 }
 
 // BEGIN HOOKS
-void __stdcall HookCommon::KeyPressHook(DWORD* dxKey, bool pressed, DWORD vKey) {
+void __stdcall HookCommon::KeyPressHook(fallout::DWORD* dxKey, bool pressed, fallout::DWORD vKey) {
 	if (!IsGameLoaded() || !HookScripts::HookHasScript(HOOK_KEYPRESS)) {
 		return;
 	}
 	BeginHook();
 	argCount = 3;
-	args[0] = (DWORD)pressed;
+	args[0] = (fallout::DWORD)pressed;
 	args[1] = *dxKey;
 	args[2] = vKey;
 	RunHookScript(HOOK_KEYPRESS);
@@ -202,13 +202,13 @@ void __stdcall HookCommon::KeyPressHook(DWORD* dxKey, bool pressed, DWORD vKey) 
 	EndHook();
 }
 
-void __stdcall HookCommon::MouseClickHook(DWORD button, bool pressed) {
+void __stdcall HookCommon::MouseClickHook(fallout::DWORD button, bool pressed) {
 	if (!IsGameLoaded() || !HookScripts::HookHasScript(HOOK_MOUSECLICK)) {
 		return;
 	}
 	BeginHook();
 	argCount = 2;
-	args[0] = (DWORD)pressed;
+	args[0] = (fallout::DWORD)pressed;
 	args[1] = button;
 	RunHookScript(HOOK_MOUSECLICK);
 	EndHook();
@@ -216,7 +216,7 @@ void __stdcall HookCommon::MouseClickHook(DWORD button, bool pressed) {
 
 static unsigned long previousGameMode = 0;
 
-void HookCommon::GameModeChangeHook(DWORD exit) {
+void HookCommon::GameModeChangeHook(fallout::DWORD exit) {
 	if (HookScripts::HookHasScript(HOOK_GAMEMODECHANGE)) {
 		BeginHook();
 		argCount = 2;

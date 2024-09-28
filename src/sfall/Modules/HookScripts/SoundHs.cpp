@@ -10,7 +10,7 @@ using namespace sfall::script;
 namespace sfall
 {
 
-static DWORD __fastcall BuildSfxWeaponHook_Script(long effectType, fo::GameObject* weapon, long hitMode, fo::GameObject* target) {
+static DWORD __fastcall BuildSfxWeaponHook_Script(long effectType, fallout::Object* weapon, long hitMode, fallout::Object* target) {
 	BeginHook();
 	allowNonIntReturn = true;
 	argCount = 4;

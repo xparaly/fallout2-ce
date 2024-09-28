@@ -21,11 +21,11 @@ void Inject_TargetObjectHook();
 void Inject_BestWeaponHook();
 void Inject_CanUseWeaponHook();
 
-int __fastcall AmmoCostHook_Script(DWORD hookType, fo::GameObject* weapon, DWORD &rounds);
+int __fastcall AmmoCostHook_Script(DWORD hookType, fallout::Object* weapon, DWORD &rounds);
 
-long CalcApCostHook_Invoke(fo::GameObject* source, long hitMode, long isCalled, long cost, fo::GameObject* weapon);
-//void FindTargetHook_Invoke(fo::GameObject* targets[], fo::GameObject* attacker);
-//fo::GameObject* BestWeaponHook_Invoke(fo::GameObject* bestWeapon, fo::GameObject* source, fo::GameObject* weapon1, fo::GameObject* weapon2, fo::GameObject* target);
-bool CanUseWeaponHook_Invoke(bool result, fo::GameObject* source, fo::GameObject* weapon, long hitMode);
+long CalcApCostHook_Invoke(fallout::Object* source, long hitMode, long isCalled, long cost, fallout::Object* weapon);
+//void FindTargetHook_Invoke(fallout::Object* targets[], fallout::Object* attacker);
+//fallout::Object* BestWeaponHook_Invoke(fallout::Object* bestWeapon, fallout::Object* source, fallout::Object* weapon1, fallout::Object* weapon2, fallout::Object* target);
+bool CanUseWeaponHook_Invoke(bool result, fallout::Object* source, fallout::Object* weapon, long hitMode);
 
 }

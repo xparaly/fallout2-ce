@@ -15,6 +15,6 @@ void Inject_ScriptProcedureHook2();
 void Inject_AdjustPoisonHook();
 void Inject_AdjustRadsHook();
 
-long UseObjOnHook_Invoke(fo::GameObject* source, fo::GameObject* item, fo::GameObject* target);
+long UseObjOnHook_Invoke(fallout::Object* source, fallout::Object* item, fallout::Object* target);
 
 }

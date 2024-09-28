@@ -167,7 +167,7 @@ static int gCharacterButton = -1;
 static int gSingleAttackButton = -1;
 
 // 0x518F78
-static int gInterfaceCurrentHand = HAND_LEFT;
+int gInterfaceCurrentHand = HAND_LEFT;
 
 // 0x518F7C
 static Rect gInterfaceBarMainActionRect;

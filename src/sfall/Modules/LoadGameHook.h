@@ -55,7 +55,7 @@ public:
 	static Delegate<>& OnAfterNewGame();
 
 	// Invoked when the game mode is changed.
-	static Delegate<DWORD>& OnGameModeChange();
+	static Delegate<fallout::DWORD>& OnGameModeChange();
 
 	// Invoked before the game exits to windows
 	static Delegate<>& OnBeforeGameClose();
@@ -74,11 +74,11 @@ public:
 // True if game was started, false when on the main menu
 bool IsGameLoaded();
 
-DWORD InWorldMap();
+fallout::DWORD InWorldMap();
 
-DWORD InCombat();
+fallout::DWORD InCombat();
 
-DWORD InDialog();
+fallout::DWORD InDialog();
 
 enum LoopFlag : unsigned long {
 	WORLDMAP    = 1 << 0,   // 0x1
@@ -107,7 +107,7 @@ enum LoopFlag : unsigned long {
 	SPECIAL     = 1UL << 31 // 0x80000000 Additional special flag for all modes
 };
 
-DWORD GetLoopFlags();
+fallout::DWORD GetLoopFlags();
 
 // set the given flag
 void SetLoopFlag(LoopFlag flag);

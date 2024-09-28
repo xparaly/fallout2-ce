@@ -267,7 +267,7 @@ static void inventoryRenderItemDescription(char* string);
 static void inventoryExamineItem(Object* critter, Object* item);
 static void inventoryWindowOpenContextMenu(int eventCode, int inventoryWindowType);
 static InventoryMoveResult _move_inventory(Object* item, int slotIndex, Object* targetObj, bool isPlanting);
-static int _barter_compute_value(Object* a1, Object* a2);
+int _barter_compute_value(Object* a1, Object* a2);
 static int _barter_attempt_transaction(Object* a1, Object* a2, Object* a3, Object* a4);
 static void _barter_move_inventory(Object* a1, int quantity, int a3, int a4, Object* a5, Object* a6, bool a7);
 static void _barter_move_from_table_inventory(Object* a1, int quantity, int a3, Object* a4, Object* a5, bool a6);
@@ -2479,7 +2479,7 @@ static void _inven_pickup(int keyCode, int a2)
 }
 
 // 0x4714E0
-static void _switch_hand(Object* a1, Object** a2, Object** a3, int a4)
+void _switch_hand(Object* a1, Object** a2, Object** a3, int a4)
 {
     if (*a2 != nullptr) {
         if (itemGetType(*a2) == ITEM_TYPE_WEAPON && itemGetType(a1) == ITEM_TYPE_AMMO) {
@@ -4658,7 +4658,7 @@ static InventoryMoveResult _move_inventory(Object* item, int slotIndex, Object* 
 }
 
 // 0x474B2C
-static int _barter_compute_value(Object* a1, Object* a2)
+int _barter_compute_value(Object* a1, Object* a2)
 {
     if (gGameDialogSpeakerIsPartyMember) {
         return objectGetInventoryWeight(_btable);

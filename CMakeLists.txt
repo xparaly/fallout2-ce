@@ -310,12 +310,13 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/sfall/Delegate.h"
     "src/sfall/Logging.cpp"
     "src/sfall/Logging.h"
+    "src/to_move_somewhere_else.cpp"
     "src/to_move_somewhere_else.h"
-#    "src/sfall/InputFuncs.cpp"
-#    "src/sfall/InputFuncs.h"
+    "src/sfall/InputFuncs.cpp"
+    "src/sfall/InputFuncs.h"
 
- #   "src/sfall/SafeWrite.cpp"
- #   "src/sfall/SafeWrite.h"
+    "src/sfall/SafeWrite.cpp"
+    "src/sfall/SafeWrite.h"
 )
 
 target_sources(${EXECUTABLE_NAME} PUBLIC

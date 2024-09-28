@@ -526,7 +526,7 @@ static int wmMarkSubTileOffsetKnown(int tile, int subtileX, int subtileY, int of
 static int wmMarkSubTileOffsetVisitedFunc(int tile, int subtileX, int subtileY, int offsetX, int offsetY, int subtileState);
 static void wmMarkSubTileRadiusVisited(int x, int y);
 static int wmTileGrabArt(int tileIdx);
-static int wmInterfaceRefresh();
+int wmInterfaceRefresh();
 static void wmInterfaceRefreshDate(bool shouldRefreshWindow);
 static int wmMatchWorldPosToArea(int x, int y, int* areaIdxPtr);
 static int wmInterfaceDrawCircleOverlay(CityInfo* cityInfo, CitySizeDescription* citySizeInfo, unsigned char* buffer, int x, int y);

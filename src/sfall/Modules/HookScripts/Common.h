@@ -6,21 +6,21 @@
 #include "..\Scripting\ScriptValue.h"
 
 // Common variables and functions for hook script implementations
-
+//using namespace fallout;
 namespace sfall
 {
 
 class HookCommon {
 public:
-	static DWORD GetHSArgCount();
+	static fallout::DWORD GetHSArgCount();
 	static fallout::ProgramValue GetHSArg();
-	static fallout::ProgramValue GetHSArgAt(DWORD id);
-	static void SetHSArg(DWORD id, const fallout::ProgramValue& value);
+	static fallout::ProgramValue GetHSArgAt(fallout::DWORD id);
+	static void SetHSArg(fallout::DWORD id, const fallout::ProgramValue& value);
 	static void SetHSReturn(const fallout::ProgramValue& value);
 
-	static void GameModeChangeHook(DWORD exit);
-	static void __stdcall KeyPressHook(DWORD* dxKey, bool pressed, DWORD vKey);
-	static void __stdcall MouseClickHook(DWORD button, bool pressed);
+	static void GameModeChangeHook(fallout::DWORD exit);
+	static void __stdcall KeyPressHook(fallout::DWORD* dxKey, bool pressed, fallout::DWORD vKey);
+	static void __stdcall MouseClickHook(fallout::DWORD button, bool pressed);
 
 	static void Reset();
 };
@@ -37,15 +37,15 @@ extern std::vector<HookScript> hooks[];
 
 extern bool allowNonIntReturn; // allow set_sfall_return with non-int values (validate value in the hook code)
 extern fallout::opcode_t retTypes[]; // current hook return value types
-extern DWORD args[];  // current hook arguments
-extern DWORD rets[];  // current hook return values
+extern fallout::DWORD args[];  // current hook arguments
+extern fallout::DWORD rets[];  // current hook return values
 
-extern DWORD argCount;
-extern DWORD cRet;    // how many return values were set by current hook script
-extern DWORD cRetTmp; // how many return values were set by specific hook script (when using register_hook)
+extern fallout::DWORD argCount;
+extern fallout::DWORD cRet;    // how many return values were set by current hook script
+extern fallout::DWORD cRetTmp; // how many return values were set by specific hook script (when using register_hook)
 
 void __stdcall BeginHook();
-void __stdcall RunHookScript(DWORD hook);
+void __stdcall RunHookScript(fallout::DWORD hook);
 void __stdcall EndHook();
 
 #define HookBegin pushadc __asm call BeginHook popadc
