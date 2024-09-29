@@ -117,9 +117,9 @@ using namespace script;
 //static std::unordered_set<fo::Program*> checkedScripts;
 //
 //// a map of all sfall programs (global and hook scripts) by thier scriptPtr
-//typedef std::unordered_map<fo::Program*, ScriptProgram> SfallProgsMap;
-//static SfallProgsMap sfallProgsMap;
-//
+typedef std::unordered_map<fallout::Program*, fallout::ScriptProgram> SfallProgsMap;
+static SfallProgsMap sfallProgsMap;
+
 //// a map scriptPtr => self_obj  to override self_obj for all script types using set_self
 //std::unordered_map<fo::Program*, SelfOverrideObj> selfOverrideMap;
 //
@@ -133,8 +133,8 @@ using namespace script;
 //DWORD availableGlobalScriptTypes = 0;
 //static DWORD isGlobalScriptLoading = 0;
 //static bool isGameReset;
-//bool alwaysFindScripts;
-//
+bool alwaysFindScripts;
+
 //fo::ScriptInstance overrideScript = {0};
 //
 //long ScriptExtender::GetScriptReturnValue() {
@@ -460,9 +460,9 @@ void RunScriptProgram(fallout::ScriptProgram &prog) {
 	}
 }
 
-//void ScriptExtender::AddProgramToMap(ScriptProgram &prog) {
-//	sfallProgsMap[prog.ptr] = prog;
-//}
+void ScriptExtender::AddProgramToMap(fallout::ScriptProgram &prog) {
+	sfallProgsMap[prog.ptr] = prog;
+}
 
 //ScriptProgram* ScriptExtender::GetGlobalScriptProgram(fo::Program* scriptPtr) {
 //	SfallProgsMap::iterator it = sfallProgsMap.find(scriptPtr);

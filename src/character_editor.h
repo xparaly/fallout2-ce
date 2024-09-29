@@ -14,6 +14,7 @@ char* _strmfe(char* dest, const char* name, const char* ext);
 int characterEditorSave(File* stream);
 int characterEditorLoad(File* stream);
 void characterEditorReset();
+extern int characterEditorDrawCardWithOptions(int graphicId, const char* name, const char* attributes, char* description);
 
 } // namespace fallout
 

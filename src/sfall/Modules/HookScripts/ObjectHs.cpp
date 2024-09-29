@@ -58,7 +58,7 @@ static __declspec(naked) void UseObjOnHook() {
 		retn;
 defaultHandler:
 		HookEnd;
-		jmp fo::funcoffs::protinst_use_item_on_;
+		jmp fallout::_protinst_use_item_on;
 	}
 }
 
@@ -85,7 +85,7 @@ static __declspec(naked) void Drug_UseObjOnHook() {
 		retn;
 defaultHandler:
 		HookEnd;
-		jmp fo::funcoffs::item_d_take_drug_;
+		jmp fallout::_item_d_take_drug;
 	}
 }
 
@@ -111,7 +111,7 @@ static __declspec(naked) void UseObjHook() {
 		retn;
 defaultHandler:
 		HookEnd;
-		jmp fo::funcoffs::protinst_use_item_;
+		jmp fallout::_protinst_use_item;
 	}
 }
 
@@ -152,7 +152,7 @@ next:
 		jle  end;                      // goto no animate
 		mov  edx, eax;                 // restore vanilla or hook anim code
 		pop  eax;
-		jmp  fo::funcoffs::register_object_animate_;
+		jmp  fallout::animationRegisterAnimate;
 end:
 		pop  eax;
 		retn;
@@ -168,7 +168,7 @@ static DWORD __fastcall DescriptionObjHook_Script(DWORD object) {
 
 	RunHookScript(HOOK_DESCRIPTIONOBJ);
 
-	DWORD textPtr = cRet > 0 && (retTypes[0] == DataType::INT || retTypes[0] == DataType::STR)
+	DWORD textPtr = cRet > 0 && (retTypes[0] == (fallout::opcode_t)fallout::DataType::INT || retTypes[0] == (fallout::opcode_t)fallout::DataType::STR)
 	              ? rets[0]
 	              : 0;
 
@@ -187,7 +187,7 @@ static __declspec(naked) void DescriptionObjHook() {
 		test eax, eax; // pointer to text
 		jnz  skip;
 		mov  eax, ebp;
-		jmp  fo::funcoffs::object_description_;
+		jmp  fallout::objectGetDescription;
 skip:
 		retn;
 	}
@@ -236,7 +236,7 @@ skip:
 		add  esp, 8;
 end:
 		popadc;
-		jmp  fo::funcoffs::obj_turn_off_light_;
+		jmp  fallout::_obj_turn_off_light;
 	}
 }
 
@@ -314,7 +314,7 @@ end:
 static __declspec(naked) void After_ScriptStdProcedureHook() {
 	using namespace fo::Scripts;
 	__asm {
-		call fo::funcoffs::executeProcedure_;
+		call fallout::_executeProcedure;
 		cmp  ecx, critter_p_proc;
 		je   skip;
 		cmp  ecx, timed_event_p_proc;
@@ -378,20 +378,20 @@ static DWORD __fastcall AdjustRads_Script(DWORD critter, long amount) {
 }
 
 __declspec(naked) void critter_adjust_rads_hack() {
-	using namespace fo;
-	using namespace Fields;
-	__asm {
-		cmp  dword ptr [eax + protoId], PID_Player; // critter.pid
-		jne  notDude;
-		push ecx;
-		call AdjustRads_Script; // ecx - critter, edx - amount
-		pop  ecx;
-		mov  ebx, eax;          // old/new amount
-		mov  edx, ds:[FO_VAR_obj_dude];
-		xor  eax, eax;          // for continue func
-notDude:
-		retn;
-	}
+//	using namespace fo;
+//	using namespace Fields;
+//	__asm {
+//		cmp  dword ptr [eax + protoId], PID_Player; // critter.pid
+//		jne  notDude;
+//		push ecx;
+//		call AdjustRads_Script; // ecx - critter, edx - amount
+//		pop  ecx;
+//		mov  ebx, eax;          // old/new amount
+//		mov  edx, ds:[FO_VAR_obj_dude];
+//		xor  eax, eax;          // for continue func
+//notDude:
+//		retn;
+//	}
 }
 
 void Inject_UseObjOnHook() {

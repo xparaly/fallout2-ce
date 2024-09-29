@@ -7,6 +7,9 @@
 
 namespace fallout {
 
+// Maximum length of dude's name length.
+#define DUDE_NAME_MAX_LENGTH (32)
+
 typedef enum DudeState {
     DUDE_STATE_SNEAKING = 0,
     DUDE_STATE_LEVEL_UP_AVAILABLE = 3,

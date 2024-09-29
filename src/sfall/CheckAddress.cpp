@@ -3,6 +3,9 @@
 //#include "main.h"
 
 #include "CheckAddress.h"
+#include <map>
+#include <vector>
+#include <algorithm>
 
 namespace sfall
 {
@@ -130,50 +133,50 @@ static std::vector<HackPair> hackAddr = {
 
 // Checking for conflicts requires all options in ddraw.ini to be enabled
 void PrintAddrList() {
-	long level = IniReader::GetIntDefaultConfig("Debugging", "Enable", 0);
-	if (level < 10) hackAddr.clear();
+	//long level = IniReader::GetIntDefaultConfig("Debugging", "Enable", 0);
+	//if (level < 10) hackAddr.clear();
 
-	std::vector<HackPair> sortAddr(hackAddr);
+	//std::vector<HackPair> sortAddr(hackAddr);
 
-	for (const auto &wa : writeAddress) {
-		sortAddr.emplace_back(wa.first, wa.second);
-	}
-	std::sort(sortAddr.begin(), sortAddr.end(), [](const HackPair &a, const HackPair &b) {
-		return (a.addr != b.addr) ? a.addr < b.addr : a.len < b.len;
-	});
+	//for (const auto &wa : writeAddress) {
+	//	sortAddr.emplace_back(wa.first, wa.second);
+	//}
+	//std::sort(sortAddr.begin(), sortAddr.end(), [](const HackPair &a, const HackPair &b) {
+	//	return (a.addr != b.addr) ? a.addr < b.addr : a.len < b.len;
+	//});
 
-	unsigned long pa = 0, pl = 0;
-	for (const auto &el : sortAddr)
-	{
-		unsigned long diff = (pa) ? (el.addr - pa) : -1; // length between two addresses
-		if (diff == 0) {
-			dlog_f("0x%x L:%d [Overwriting]\n", DL_MAIN, el.addr, el.len);
-		} else if (diff < pl) {
-			if (std::find(excludeConflict.cbegin(), excludeConflict.cend(), el.addr) == excludeConflict.cend()) {
-				dlog_f("0x%x L:%d [Conflict] with 0x%x L:%d\n", DL_MAIN, el.addr, el.len, pa, pl);
-				MessageBoxA(0, "Conflict detected!", "", MB_TASKMODAL);
-			}
-		} else if (level >= 11 && diff == pl) {
-			dlog_f("0x%x L:%d [Warning] Hacking near:0x%x\n", DL_MAIN, el.addr, el.len, pa);
-		} else if (level >= 12) {
-			dlog_f("0x%x L:%d\n", DL_MAIN, el.addr, el.len);
-		}
-		pa = el.addr;
-		pl = el.len;
-	}
+	//unsigned long pa = 0, pl = 0;
+	//for (const auto &el : sortAddr)
+	//{
+	//	unsigned long diff = (pa) ? (el.addr - pa) : -1; // length between two addresses
+	//	if (diff == 0) {
+	//		dlog_f("0x%x L:%d [Overwriting]\n", DL_MAIN, el.addr, el.len);
+	//	} else if (diff < pl) {
+	//		if (std::find(excludeConflict.cbegin(), excludeConflict.cend(), el.addr) == excludeConflict.cend()) {
+	//			dlog_f("0x%x L:%d [Conflict] with 0x%x L:%d\n", DL_MAIN, el.addr, el.len, pa, pl);
+	//			MessageBoxA(0, "Conflict detected!", "", MB_TASKMODAL);
+	//		}
+	//	} else if (level >= 11 && diff == pl) {
+	//		dlog_f("0x%x L:%d [Warning] Hacking near:0x%x\n", DL_MAIN, el.addr, el.len, pa);
+	//	} else if (level >= 12) {
+	//		dlog_f("0x%x L:%d\n", DL_MAIN, el.addr, el.len);
+	//	}
+	//	pa = el.addr;
+	//	pl = el.len;
+	//}
 }
 
-void CheckConflict(DWORD addr, long len) {
+void CheckConflict(fallout::DWORD addr, long len) {
 	if (writeAddress.find(addr) != writeAddress.cend()) {
 		if (std::find(excludeWarning.cbegin(), excludeWarning.cend(), addr) != excludeWarning.cend()) return;
 		char buf[64];
 		sprintf_s(buf, "Memory overwriting at address 0x%x", addr);
-		MessageBoxA(0, buf, "", MB_TASKMODAL);
+//		MessageBoxA(0, buf, "", MB_TASKMODAL);
 	}
 	writeAddress.emplace(addr, len);
 }
 
-void AddrAddToList(DWORD addr, long len) {
+void AddrAddToList(fallout::DWORD addr, long len) {
 	writeAddress.emplace(addr, len);
 }
 

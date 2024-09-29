@@ -281,16 +281,16 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/sfall/Modules/HookScripts/MiscHs.h"
     "src/sfall/Modules/HookScripts/ObjectHs.cpp"
     "src/sfall/Modules/HookScripts/ObjectHs.h"
-#    "src/sfall/Modules/HookScripts/SoundHs.cpp"
- #   "src/sfall/Modules/HookScripts/SoundHs.h"
+    "src/sfall/Modules/HookScripts/SoundHs.cpp"
+    "src/sfall/Modules/HookScripts/SoundHs.h"
 
-#    "src/sfall/Modules/CritterPoison.cpp"
-#    "src/sfall/Modules/CritterPoison.h"
+    "src/sfall/Modules/CritterPoison.cpp"
+    "src/sfall/Modules/CritterPoison.h"
 
     "src/sfall/Modules/HookScripts.cpp"
     "src/sfall/Modules/HookScripts.h"
-#    "src/sfall/Modules/Karma.cpp"
-#    "src/sfall/Modules/Karma.h"
+    "src/sfall/Modules/Karma.cpp"
+    "src/sfall/Modules/Karma.h"
 
     "src/sfall/Modules/LoadGameHook.cpp"
     "src/sfall/Modules/LoadGameHook.h"
@@ -298,14 +298,14 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/sfall/Modules/MainLoopHook.h"
     "src/sfall/Modules/Module.h"
 
-#    "src/sfall/Modules/PartyControl.cpp"
-#    "src/sfall/Modules/PartyControl.h"
+    "src/sfall/Modules/PartyControl.cpp"
+    "src/sfall/Modules/PartyControl.h"
 
     "src/sfall/Modules/ScriptExtender.cpp"
     "src/sfall/Modules/ScriptExtender.h"
 
-#    "src/sfall/CheckAddress.cpp"
-#    "src/sfall/CheckAddress.h"
+    "src/sfall/CheckAddress.cpp"
+    "src/sfall/CheckAddress.h"
 
     "src/sfall/Delegate.h"
     "src/sfall/Logging.cpp"

@@ -5147,7 +5147,7 @@ static int wmTileGrabArt(int tileIdx)
 }
 
 // 0x4C3830
-static int wmInterfaceRefresh()
+int wmInterfaceRefresh()
 {
     if (wmInterfaceWasInitialized != 1) {
         return 0;

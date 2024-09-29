@@ -26,10 +26,10 @@
 #include "HookScripts.h"
 
 #include "Karma.h"
-#include "VariableOffsets.h"
-#include "game.h"
-#include "display_monitor.h"
-#include "character_editor.h"
+#include "..\FalloutEngine\VariableOffsets.h"
+#include "..\..\game.h"
+#include "..\..\display_monitor.h"
+#include "..\..\character_editor.h"
 
 namespace sfall
 {
@@ -46,7 +46,7 @@ static std::string karmaLossMsg;
 bool displayKarmaChanges;
 
 static DWORD __stdcall DrawCard() {
-	int reputation = fo::var::game_global_vars[fo::GVAR_PLAYER_REPUTATION];
+    int reputation = *(fallout::gGameGlobalVars + fallout::GVAR_PLAYER_REPUTATION);
 	for (const auto& info : karmaFrms) {
 		if (reputation < info.points) {
 			return info.frm;
@@ -67,7 +67,7 @@ static __declspec(naked) void DrawInfoWin_hook() {
 		pop  edx;
 		pop  ecx;
 skip:
-		jmp  fo::funcoffs::DrawCard_;
+		jmp  fallout::characterEditorDrawCardWithOptions;
 	}
 }
 
@@ -78,36 +78,36 @@ void Karma::DisplayKarma(int value) {
 	} else {
 		sprintf_s(buf, karmaLossMsg.c_str(), -value);
 	}
-	fo::func::display_print(buf);
+	fallout::displayMonitorAddMessage(buf);
 }
 
 static void ApplyDisplayKarmaChangesPatch() {
-	displayKarmaChanges = IniReader::GetConfigInt("Misc", "DisplayKarmaChanges", 0) != 0;
+	/*displayKarmaChanges = IniReader::GetConfigInt("Misc", "DisplayKarmaChanges", 0) != 0;
 	if (displayKarmaChanges) {
 		dlogr("Applying display karma changes patch.", DL_INIT);
 		karmaGainMsg = Translate::Get("sfall", "KarmaGain", "You gained %d karma.");
 		karmaLossMsg = Translate::Get("sfall", "KarmaLoss", "You lost %d karma.");
 		HookScripts::InjectingHook(HOOK_SETGLOBALVAR);
-	}
+	}*/
 }
 
 static void ApplyKarmaFRMsPatch() {
-	auto karmaFrmList = IniReader::GetConfigList("Misc", "KarmaFRMs", "");
-	size_t countFrm = karmaFrmList.size();
-	if (countFrm) {
-		dlogr("Applying karma FRM patch.", DL_INIT);
-		auto karmaPointsList = IniReader::GetConfigList("Misc", "KarmaPoints", "");
+	//auto karmaFrmList = IniReader::GetConfigList("Misc", "KarmaFRMs", "");
+	//size_t countFrm = karmaFrmList.size();
+	//if (countFrm) {
+	//	dlogr("Applying karma FRM patch.", DL_INIT);
+	//	auto karmaPointsList = IniReader::GetConfigList("Misc", "KarmaPoints", "");
 
-		karmaFrms.resize(countFrm);
-		size_t countPoints = karmaPointsList.size();
-		for (size_t i = 0; i < countFrm; i++) {
-			karmaFrms[i].frm = atoi(karmaFrmList[i].c_str());
-			karmaFrms[i].points = (countPoints > i)
-			                    ? atoi(karmaPointsList[i].c_str())
-			                    : INT_MAX;
-		}
-		HookCall(0x4367A9, DrawInfoWin_hook);
-	}
+	//	karmaFrms.resize(countFrm);
+	//	size_t countPoints = karmaPointsList.size();
+	//	for (size_t i = 0; i < countFrm; i++) {
+	//		karmaFrms[i].frm = atoi(karmaFrmList[i].c_str());
+	//		karmaFrms[i].points = (countPoints > i)
+	//		                    ? atoi(karmaPointsList[i].c_str())
+	//		                    : INT_MAX;
+	//	}
+	//	HookCall(0x4367A9, DrawInfoWin_hook);
+	//}
 }
 
 void Karma::init() {

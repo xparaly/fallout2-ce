@@ -4,6 +4,7 @@
 #include "Common.h"
 
 #include "SoundHs.h"
+#include "..\..\..\game_sound.h"
 
 using namespace sfall::script;
 
@@ -22,7 +23,7 @@ static DWORD __fastcall BuildSfxWeaponHook_Script(long effectType, fallout::Obje
 
 	RunHookScript(HOOK_BUILDSFXWEAPON);
 
-	DWORD textPtr = cRet > 0 && retTypes[0] == DataType::STR
+	DWORD textPtr = cRet > 0 && retTypes[0] == (fallout::opcode_t)DataType::STR
 	              ? rets[0]
 	              : 0;
 	EndHook();
@@ -44,7 +45,7 @@ static __declspec(naked) void gsnd_build_weapon_sfx_name_hook() {
 		pop  edx;
 		jnz  skip;
 		pop  eax;
-		jmp  fo::funcoffs::gsnd_build_weapon_sfx_name_;
+		jmp  fallout::sfxBuildWeaponName;
 skip:
 		add  esp, 4;
 		retn;

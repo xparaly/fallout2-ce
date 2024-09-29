@@ -16,9 +16,12 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "..\main.h"
-#include "..\FalloutEngine\Fallout2.h"
+//#include "..\main.h"
+//#include "..\FalloutEngine\Fallout2.h"
 #include "PartyControl.h"
+#include "..\..\obj_types.h"
+#include "..\SafeWrite.h"
+#include "..\..\stat.h"
 
 #include "CritterPoison.h"
 
@@ -34,21 +37,21 @@ void CritterPoison::SetDefaultAdjustPoisonHP(long value) {
 	adjustPoisonHP_Default = adjustPoisonHP = value;
 }
 
-void __fastcall sf_critter_adjust_poison(fo::GameObject* critter, long amount) {
-	if (amount == 0) return;
-	if (amount > 0) {
-		amount -= fo::func::stat_level(critter, fo::STAT_poison_resist) * amount / 100;
-	} else if (critter->critter.poison == 0) {
-		return;
-	}
-	critter->critter.poison += amount;
-	if (critter->critter.poison < 0) {
-		critter->critter.poison = 0; // level can't be negative
-	} else {
-		// set uID for saving queue
-		//Objects::SetObjectUniqueID(critter);
-		//fo::func::queue_add(10 * (505 - 5 * critter->critter.poison), critter, nullptr, fo::QueueType::poison_event);
-	}
+void __fastcall sf_critter_adjust_poison(fallout::Object* critter, long amount) {
+	//if (amount == 0) return;
+	//if (amount > 0) {
+	//	amount -= fo::func::stat_level(critter, fo::STAT_poison_resist) * amount / 100;
+	//} else if (critter->critter.poison == 0) {
+	//	return;
+	//}
+	//critter->critter.poison += amount;
+	//if (critter->critter.poison < 0) {
+	//	critter->critter.poison = 0; // level can't be negative
+	//} else {
+	//	// set uID for saving queue
+	//	//Objects::SetObjectUniqueID(critter);
+	//	//fo::func::queue_add(10 * (505 - 5 * critter->critter.poison), critter, nullptr, fo::QueueType::poison_event);
+	//}
 }
 
 static __declspec(naked) void critter_adjust_poison_hack() {
@@ -69,50 +72,50 @@ __declspec(naked) void critter_check_poison_hack() {
 }
 
 void __fastcall critter_check_poison_fix() {
-	if (PartyControl::IsNpcControlled()) {
-		// since another critter is being controlled, we can't apply the poison effect to it
-		// instead, we add the "poison" event to dude again, which will be triggered when dude returns to the player's control
-		fo::func::queue_clear_type(fo::QueueType::poison_event, nullptr);
-		fo::GameObject* dude = PartyControl::RealDudeObject();
-		fo::func::queue_add(10, dude, nullptr, fo::QueueType::poison_event);
-	}
+	//if (PartyControl::IsNpcControlled()) {
+	//	// since another critter is being controlled, we can't apply the poison effect to it
+	//	// instead, we add the "poison" event to dude again, which will be triggered when dude returns to the player's control
+	//	fo::func::queue_clear_type(fo::QueueType::poison_event, nullptr);
+	//	fallout::Object* dude = PartyControl::RealDudeObject();
+	//	fo::func::queue_add(10, dude, nullptr, fo::QueueType::poison_event);
+	//}
 }
 
 static __declspec(naked) void critter_check_poison_hack_fix() {
-	using namespace fo;
-	using namespace Fields;
-	__asm {
-		mov  ecx, [eax + protoId]; // critter.pid
-		cmp  ecx, PID_Player;
-		jnz  notDude;
-		retn;
-notDude:
-		call critter_check_poison_fix;
-		or   al, 1; // unset ZF (exit from func)
-		retn;
-	}
+//	using namespace fo;
+//	using namespace Fields;
+//	__asm {
+//		mov  ecx, [eax + protoId]; // critter.pid
+//		cmp  ecx, PID_Player;
+//		jnz  notDude;
+//		retn;
+//notDude:
+//		call critter_check_poison_fix;
+//		or   al, 1; // unset ZF (exit from func)
+//		retn;
+//	}
 }
 
 __declspec(naked) void critter_adjust_poison_hack_fix() { // can also be called from HOOK_ADJUSTPOISON
-	using namespace fo;
-	using namespace Fields;
-	__asm {
-		mov  edx, ds:[FO_VAR_obj_dude];
-		mov  ebx, [eax + protoId]; // critter.pid
-		mov  ecx, PID_Player;
-		retn;
-	}
+	//using namespace fo;
+	//using namespace Fields;
+	//__asm {
+	//	mov  edx, ds:[FO_VAR_obj_dude];
+	//	mov  ebx, [eax + protoId]; // critter.pid
+	//	mov  ecx, PID_Player;
+	//	retn;
+	//}
 }
 
 static __declspec(naked) void critter_check_rads_hack() {
-	using namespace fo;
-	using namespace Fields;
-	__asm {
-		mov  edx, ds:[FO_VAR_obj_dude];
-		mov  eax, [eax + protoId]; // critter.pid
-		mov  ecx, PID_Player;
-		retn;
-	}
+	//using namespace fo;
+	//using namespace Fields;
+	//__asm {
+	//	mov  edx, ds:[FO_VAR_obj_dude];
+	//	mov  eax, [eax + protoId]; // critter.pid
+	//	mov  ecx, PID_Player;
+	//	retn;
+	//}
 }
 
 void CritterPoison::init() {

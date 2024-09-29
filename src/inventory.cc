@@ -259,7 +259,7 @@ static void inventoryItemSlotOnMouseEnter(int btn, int keyCode);
 static void inventoryItemSlotOnMouseExit(int btn, int keyCode);
 static void _inven_update_lighting(Object* a1);
 static void _inven_pickup(int keyCode, int a2);
-static void _switch_hand(Object* a1, Object** a2, Object** a3, int a4);
+static void fallout::_switch_hand(Object* a1, Object** a2, Object** a3, int a4);
 static void _adjust_fid();
 static void inventoryRenderSummary();
 static int _inven_from_button(int a1, Object** a2, Object*** a3, Object** a4);
@@ -274,7 +274,7 @@ static void _barter_move_from_table_inventory(Object* a1, int quantity, int a3, 
 static void inventoryWindowRenderInnerInventories(int win, Object* a2, Object* a3, int a4);
 static void _container_enter(int a1, int a2);
 static void _container_exit(int keyCode, int inventoryWindowType);
-static int _drop_into_container(Object* a1, Object* a2, int a3, Object** a4, int quantity);
+static int fallout::_drop_into_container(Object* a1, Object* a2, int a3, Object** a4, int quantity);
 static int _drop_ammo_into_weapon(Object* weapon, Object* ammo, Object** a3, int quantity, int keyCode);
 static void _draw_amount(int value, int inventoryWindowType);
 static int inventoryQuantitySelect(int inventoryWindowType, Object* item, int a3);
@@ -425,7 +425,7 @@ static int _target_stack_offset[10];
 static MessageList gInventoryMessageList;
 
 // 0x59E81C
-static Object* _target_stack[10];
+Object* _target_stack[10];
 
 // 0x59E844
 static int _stack_offset[10];
@@ -452,7 +452,7 @@ static Inventory* _ptable_pud;
 static InventoryCursorData gInventoryCursorData[INVENTORY_WINDOW_CURSOR_COUNT];
 
 // 0x59E934
-static Object* _ptable;
+Object* _ptable;
 
 // 0x59E938
 static InventoryPrintItemDescriptionHandler* gInventoryPrintItemDescriptionHandler;
@@ -464,7 +464,7 @@ static int _im_value;
 static int gInventoryCursor;
 
 // 0x59E944
-static Object* _btable;
+Object* _btable;
 
 // 0x59E948
 static int _target_curr_stack;
@@ -5413,7 +5413,7 @@ static void _container_exit(int keyCode, int inventoryWindowType)
 }
 
 // 0x476464
-static int _drop_into_container(Object* a1, Object* a2, int a3, Object** a4, int quantity)
+int _drop_into_container(Object* a1, Object* a2, int a3, Object** a4, int quantity)
 {
     int quantityToMove;
     if (quantity > 1) {

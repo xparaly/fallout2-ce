@@ -33,9 +33,6 @@
 
 namespace fallout {
 
-// Maximum length of dude's name length.
-#define DUDE_NAME_MAX_LENGTH (32)
-
 // The number of effects caused by radiation.
 //
 // A radiation effect is an identifier and does not have it's own name. It's
