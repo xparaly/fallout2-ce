@@ -3,6 +3,7 @@
 #include "scripts.h"
 #include <unordered_map>
 
+bool isDebug = false;
 namespace fallout {
 
 // a map of all sfall programs (global and hook scripts) by thier scriptPtr

@@ -18,10 +18,11 @@
 
 #include "Logging.h"
 
-#include "main.h"
+//#include "main.h"
 #include "FalloutEngine\Fallout2.h"
 #include "ConsoleWindow.h"
 #include "Utils.h"
+#include "..\to_move_somewhere_else.h"
 
 #include <fstream>
 
@@ -44,7 +45,7 @@ static void OutLog(T a, int type, bool newLine = false) {
 	if (newLine) ss << "\n";
 	std::string str = ss.str();
 
-	ConsoleWindow::instance().write(str.c_str(), ConsoleWindow::Source::SFALL);
+	//ConsoleWindow::instance().write(str.c_str(), ConsoleWindow::Source::SFALL);
 
 	Log << str;
 	Log.flush();
