@@ -7,6 +7,7 @@ namespace fallout {
 
 extern int gCharacterEditorRemainingCharacterPoints;
 
+extern bool characterFileExists(const char* fname);
 int characterEditorShow(bool isCreationMode);
 void characterEditorInit();
 bool _isdoschar(int ch);

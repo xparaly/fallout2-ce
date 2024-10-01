@@ -251,7 +251,7 @@ static int characterEditorEditAge();
 static void characterEditorEditGender();
 static void characterEditorAdjustPrimaryStat(int eventCode);
 static int characterEditorShowOptions();
-static bool characterFileExists(const char* fname);
+bool characterFileExists(const char* fname);
 static int characterPrintToFile(const char* fileName);
 static char* _AddSpaces(char* string, int length);
 static char* _AddDots(char* string, int length);
@@ -4263,7 +4263,7 @@ static int characterEditorShowOptions()
 }
 
 // 0x4390B4
-static bool characterFileExists(const char* fname)
+bool characterFileExists(const char* fname)
 {
     File* stream = fileOpen(fname, "rb");
     if (stream == nullptr) {

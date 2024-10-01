@@ -67,6 +67,7 @@
 #include "window_manager.h"
 #include "window_manager_private.h"
 #include "worldmap.h"
+#include "sfall\Modules\HookScripts.h"
 
 namespace fallout {
 
@@ -370,6 +371,8 @@ int gameInitWithOptions(const char* windowTitle, bool isMapper, int font, int a4
         debugPrint("Failed on sfallArraysInit");
         return -1;
     }
+
+    sfall::HookScripts::LoadHookScripts();
 
     if (!sfall_gl_scr_init()) {
         debugPrint("Failed on sfall_gl_scr_init");

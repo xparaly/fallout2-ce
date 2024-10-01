@@ -39,8 +39,10 @@
 
 #include "HookScripts.h"
 
-#include <Windows.h>
-#include "../Logging.h"
+
+#include "..\Logging.h"
+#include "..\..\character_editor.h"
+#include "..\..\sfall_global_scripts.h"
 
 namespace sfall
 {
@@ -114,7 +116,8 @@ static HooksInjectInfo injectHooks[] = {
 	{HOOK_TARGETOBJECT,     Inject_TargetObjectHook,     0},
 	{HOOK_ENCOUNTER,        Inject_EncounterHook,        0},
 	{HOOK_ADJUSTPOISON,     Inject_AdjustPoisonHook,     0},
-	{HOOK_ADJUSTRADS,       Inject_AdjustRadsHook,       1}, // always embedded for party control fix
+	//{HOOK_ADJUSTRADS,       Inject_AdjustRadsHook,       1}, // always embedded for party control fix
+    {HOOK_ADJUSTRADS,       Inject_AdjustRadsHook,       2}, // temporarily ignoring this
 	{HOOK_ROLLCHECK,        Inject_RollCheckHook,        0},
 	{HOOK_BESTWEAPON,       Inject_BestWeaponHook,       0},
 	{HOOK_CANUSEWEAPON,     Inject_CanUseWeaponHook,     0},
@@ -159,9 +162,15 @@ void HookScripts::RegisterHook(fallout::Program* script, int id, int procNum, bo
 	}
 	if (procNum == 0) return; // prevent registration to first location in procedure when reusing "unregister" method
 
-	fallout::ScriptProgram* prog = nullptr;
-    //ScriptProgram* prog = ScriptExtender::GetGlobalScriptProgram(script);
-	if (prog) {
+    fallout::GlobalScript* scr = sfall_gl_scr_map_program_to_scr(script);
+	if (scr) {
+        fallout::ScriptProgram prog;
+        prog.ptr = scr->program;
+        for (int i = 0; i < fallout::SCRIPT_PROC_COUNT; i++) {
+            prog.procLookup[i] = scr->procs[i];
+        }
+        prog.initialized = true;
+
 		dlog_f("Script: %s registered as hook ID %d\n", DL_HOOK, script->name, id);
 		HookScript hook;
 		hook.prog = *prog;
@@ -192,7 +201,9 @@ void HookScripts::LoadHookScript(const char* name, int id) {
 	char filePath[MAX_PATH];
 
 	sprintf(filePath, "scripts\\%s.int", name);
-	bool hookHasScript = fo::func::db_access(filePath);
+    bool hookHasScript = fallout::characterFileExists(filePath);
+        
+    //bool hookHasScript = fo::func::db_access(filePath);
 
 	if (hookHasScript || injectHooks[id].injectState == 1 || (injectAllHooks && id != HOOK_SUBCOMBATDAMAGE)) {
 		HookScripts::InjectingHook(id); // inject hook to engine code
