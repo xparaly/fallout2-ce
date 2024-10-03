@@ -1,32 +1,15 @@
-/*
- *    sfall
- *    Copyright (C) 2008-2024  The sfall team
- *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include <string>
 #include <vector>
 
-#include "..\..\to_move_somewhere_else.h"
-#include "..\FalloutEngine\Functions.h"
-//#include "..\InputFuncs.h"
-#include "LoadGameHook.h"
-#include "..\..\interpreter.h"
-//#include "character_editor.h"
-#include "..\..\scripts.h"
+#include "to_move_somewhere_else.h"
+#include "sfall_hook_scripts.h"
 
+#include "sfall\FalloutEngine\Functions.h"
+//#include "..\InputFuncs.h"
+#include "sfall\Modules\LoadGameHook.h"
+#include "interpreter.h"
+//#include "character_editor.h"
+#include "scripts.h"
 
 #include "HookScripts\Common.h"
 #include "HookScripts\CombatHs.h"
@@ -37,14 +20,12 @@
 #include "HookScripts\MiscHs.h"
 #include "HookScripts\SoundHs.h"
 
-#include "HookScripts.h"
+#include "sfall\Logging.h"
+#include "character_editor.h"
+#include "sfall_global_scripts.h"
+#include "hookscripts/ScriptExtender.h"
 
-
-#include "..\Logging.h"
-#include "..\..\character_editor.h"
-#include "..\..\sfall_global_scripts.h"
-
-namespace sfall
+namespace fallout
 {
 
 // Number of types of hooks
@@ -140,7 +121,7 @@ void HookScripts::InjectingHook(int hookId) {
 	if (!IsInjectHook(hookId) && injectHooks[hookId].id == hookId) {
 		injectHooks[hookId].injectState = 2;
 		injectHooks[hookId].inject();
-		devlog_f("Inject hook ID: %d\n", DL_INIT, hookId);
+		sfall::devlog_f("Inject hook ID: %d\n", DL_INIT, hookId);
 	}
 }
 
@@ -155,7 +136,7 @@ bool HookScripts::HookHasScript(int hookId) {
 void HookScripts::RegisterHook(fallout::Program* script, int id, int procNum, bool specReg) {
 	if (id >= numHooks || injectHooks[id].id < 0) return;
 	for (std::vector<HookScript>::iterator it = hooks[id].begin(); it != hooks[id].end(); ++it) {
-		if (it->prog.ptr == script) {
+		if (it->prog.program == script) {
 			if (procNum == 0) hooks[id].erase(it); // unregister
 			return;
 		}
@@ -163,11 +144,14 @@ void HookScripts::RegisterHook(fallout::Program* script, int id, int procNum, bo
 	if (procNum == 0) return; // prevent registration to first location in procedure when reusing "unregister" method
 
     //ScriptProgram* prog = ScriptExtender::GetGlobalScriptProgram(script);
-    fallout::ScriptProgram* prog = nullptr;
-	if (prog) {
-		dlog_f("Script: %s registered as hook ID %d\n", DL_HOOK, script->name, id);
+    //fallout::ScriptProgram* prog = nullptr;
+
+    GlobalScript* scr = sfall_gl_scr_map_program_to_scr(script);
+
+    if (scr) {
+        sfall::dlog_f("Script: %s registered as hook ID %d\n", DL_HOOK, script->name, id);
 		HookScript hook;
-		hook.prog = *prog;
+		hook.prog = *scr;
 		hook.callback = procNum;
 		hook.isGlobalScript = true;
 
@@ -182,14 +166,14 @@ void HookScripts::RegisterHook(fallout::Program* script, int id, int procNum, bo
 	}
 }
 
-// run specific event procedure for all hook scripts
-void HookScripts::RunHookScriptsAtProc(DWORD procId) {
-	for (int i = 0; i < numHooks; i++) {
-		if (hooksInfo[i].hasHsScript /*&& !hooks[i][hooksInfo[i].hsPosition].isGlobalScript*/) {
-			RunScriptProc(&hooks[i][hooksInfo[i].hsPosition].prog, procId); // run hs_*.int
-		}
-	}
-}
+//// run specific event procedure for all hook scripts
+//void HookScripts::RunHookScriptsAtProc(DWORD procId) {
+//	for (int i = 0; i < numHooks; i++) {
+//		if (hooksInfo[i].hasHsScript /*&& !hooks[i][hooksInfo[i].hsPosition].isGlobalScript*/) {
+//			fallout::RunScriptProc(&hooks[i][hooksInfo[i].hsPosition].prog, procId); // run hs_*.int
+//		}
+//	}
+//}
 
 void HookScripts::LoadHookScript(const char* name, int id) {
 	char filePath[MAX_PATH];
@@ -207,31 +191,31 @@ void HookScripts::LoadHookScript(const char* name, int id) {
 		HookFile hookFile = {id, name};
 		HookScripts::hookScriptFilesList.push_back(hookFile);
 
-		dlog_f("Found hook script: %s\n", DL_HOOK, name);
+		sfall::dlog_f("Found hook script: %s\n", DL_HOOK, name);
 	}
 }
 
-static void InitHookScriptFile(const char* name, int id) {
-	fallout::ScriptProgram prog;
-	dlog("> ", DL_HOOK);
-	dlog(name, DL_HOOK);
-	InitScriptProgram(prog, name);
-	if (prog.ptr) {
-		HookScript hook;
-		hook.prog = prog;
-		hook.callback = -1;
-		hook.isGlobalScript = false;
-		hooks[id].push_back(hook);
-		ScriptExtender::AddProgramToMap(prog);
-		dlogr(" Done", DL_HOOK);
-	} else {
-		dlogr(" Error!", DL_HOOK);
-	}
-	//return (prog.ptr != nullptr);
-}
+//static void InitHookScriptFile(const char* name, int id) {
+//	fallout::ScriptProgram prog;
+//    sfall::dlog("> ", DL_HOOK);
+//	sfall::dlog(name, DL_HOOK);
+//	fallout::InitScriptProgram(prog, name);
+//	if (prog.ptr) {
+//		HookScript hook;
+//		hook.prog = prog;
+//		hook.callback = -1;
+//		hook.isGlobalScript = false;
+//		hooks[id].push_back(hook);
+//		fallout::ScriptExtender::AddProgramToMap(prog);
+//		sfall::dlogr(" Done", DL_HOOK);
+//	} else {
+//		sfall::dlogr(" Error!", DL_HOOK);
+//	}
+//	//return (prog.ptr != nullptr);
+//}
 
 void HookScripts::LoadHookScripts() {
-	dlogr("Loading hook scripts:", DL_HOOK|DL_INIT);
+    sfall::dlogr("Loading hook scripts:", DL_HOOK | DL_INIT);
 
 	static bool hooksFilesLoaded = false;
 	if (!hooksFilesLoaded) { // hook files are already put in the list
@@ -249,28 +233,28 @@ void HookScripts::LoadHookScripts() {
 		HookScripts::LoadHookScript("hs_mouseclick", HOOK_MOUSECLICK);
 		HookScripts::LoadHookScript("hs_gamemodechange", HOOK_GAMEMODECHANGE);
 
-		hooksFilesLoaded = !alwaysFindScripts;
+		hooksFilesLoaded = !sfall::alwaysFindScripts;
 	}
-	dlogr("Finished loading hook scripts.", DL_HOOK|DL_INIT);
+	sfall::dlogr("Finished loading hook scripts.", DL_HOOK|DL_INIT);
 }
 
-void HookScripts::InitHookScripts() {
-	// Note: here isGlobalScriptLoading must be already set, this should allow to register global exported variables
-	dlogr("Running hook scripts...", DL_HOOK);
-
-	for (auto& hook : HookScripts::hookScriptFilesList) {
-		InitHookScriptFile(hook.name.c_str(), hook.id);
-	}
-
-	initingHookScripts = 1;
-	for (int i = 0; i < numHooks; i++) {
-		if (!hooks[i].empty()) {
-			hooksInfo[i].hasHsScript = true;
-			RunScriptProgram(hooks[i][0].prog); // zero hook is always hs_*.int script because Hook scripts are loaded BEFORE global scripts
-		}
-	}
-	initingHookScripts = 0;
-}
+//void HookScripts::InitHookScripts() {
+//	// Note: here isGlobalScriptLoading must be already set, this should allow to register global exported variables
+//    sfall::dlogr("Running hook scripts...", DL_HOOK);
+//
+//	for (auto& hook : HookScripts::hookScriptFilesList) {
+//		InitHookScriptFile(hook.name.c_str(), hook.id);
+//	}
+//
+//	initingHookScripts = 1;
+//	for (int i = 0; i < numHooks; i++) {
+//		if (!hooks[i].empty()) {
+//			hooksInfo[i].hasHsScript = true;
+//			fallout::RunScriptProgram(hooks[i][0].prog); // zero hook is always hs_*.int script because Hook scripts are loaded BEFORE global scripts
+//		}
+//	}
+//	initingHookScripts = 0;
+//}
 
 void HookScripts::HookScriptClear() {
 	for (int i = 0; i < numHooks; i++) {
@@ -282,8 +266,8 @@ void HookScripts::HookScriptClear() {
 
 void HookScripts::init() {
 //	OnMouseClick() += HookCommon::MouseClickHook;
-	LoadGameHook::OnGameModeChange() += HookCommon::GameModeChangeHook;
-	LoadGameHook::OnAfterGameStarted() += SourceUseSkillOnInit;
+	sfall::LoadGameHook::OnGameModeChange() += HookCommon::GameModeChangeHook;
+	sfall::LoadGameHook::OnAfterGameStarted() += SourceUseSkillOnInit;
 
 //	injectAllHooks = isDebug && (IniReader::GetIntDefaultConfig("Debugging", "InjectAllGameHooks", 0) != 0);
 //	if (injectAllHooks) dlogr("Injecting all game hooks.", DL_HOOK|DL_INIT);

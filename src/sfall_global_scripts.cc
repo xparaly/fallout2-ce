@@ -13,14 +13,7 @@
 
 namespace fallout {
 
-struct GlobalScript {
-    Program* program = nullptr;
-    int procs[SCRIPT_PROC_COUNT] = { 0 };
-    int repeat = 0;
-    int count = 0;
-    int mode = 0;
-    bool once = true;
-};
+
 
 struct GlobalScriptsState {
     std::vector<std::string> paths;
@@ -164,7 +157,7 @@ void sfall_gl_scr_process_worldmap()
     sfall_gl_scr_process_simple(2, 3);
 }
 
-static GlobalScript* sfall_gl_scr_map_program_to_scr(Program* program)
+GlobalScript* sfall_gl_scr_map_program_to_scr(Program* program)
 {
     auto it = std::find_if(state->globalScripts.begin(),
         state->globalScripts.end(),

@@ -2,8 +2,19 @@
 #define FALLOUT_SFALL_GLOBAL_SCRIPTS_H_
 
 #include "interpreter.h"
+#include "scripts.h"
 
 namespace fallout {
+
+struct GlobalScript {
+    Program* program = nullptr;
+    int procs[SCRIPT_PROC_COUNT] = { 0 };
+    int repeat = 0;
+    int count = 0;
+    int mode = 0;
+    bool once = true;
+};
+
 
 bool sfall_gl_scr_init();
 void sfall_gl_scr_reset();
@@ -14,6 +25,7 @@ void sfall_gl_scr_exec_map_update_scripts(int action);
 void sfall_gl_scr_process_main();
 void sfall_gl_scr_process_input();
 void sfall_gl_scr_process_worldmap();
+GlobalScript* sfall_gl_scr_map_program_to_scr(Program* program);
 void sfall_gl_scr_set_repeat(Program* program, int frames);
 void sfall_gl_scr_set_type(Program* program, int type);
 bool sfall_gl_scr_is_loaded(Program* program);

@@ -32,6 +32,7 @@
 #include "tile.h"
 #include "worldmap.h"
 #include "sfall\Modules\HookScripts.h"
+#include "sfall_hook_scripts.h"
 
 
 namespace fallout {
@@ -747,7 +748,7 @@ static void op_register_hook(Program* program)
 
     int id = programStackPopInteger(program);
     int proc = programStackPopInteger(program);
-    sfall::HookScripts::RegisterHook(program, id, proc, specReg);
+    fallout::HookScripts::RegisterHook(program, id, proc, specReg);
 }
 
 

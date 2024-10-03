@@ -22,6 +22,11 @@ namespace fallout {
         STR = 3,
     }; 
 
+    __inline long getInt(fallout::DWORD addr)
+    {
+        return *reinterpret_cast<fallout::DWORD*>(addr);
+    }
+
 }
 
 namespace sfall {
