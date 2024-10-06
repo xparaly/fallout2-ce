@@ -20,7 +20,7 @@
 //#include "..\FalloutEngine\Fallout2.h"
 #include "PartyControl.h"
 #include "..\..\obj_types.h"
-#include "..\..\sfall_safewrite.h"
+#include "..\SafeWrite.h"
 #include "..\..\stat.h"
 
 #include "CritterPoison.h"
@@ -120,20 +120,20 @@ static __declspec(naked) void critter_check_rads_hack() {
 
 void CritterPoison::init() {
 	// Allow changing the poison level for NPCs
-	fallout::MakeCall(0x42D226, critter_adjust_poison_hack);
-	fallout::SafeWrite8(0x42D22C, 0xDA); // jmp 0x42D30A
+	MakeCall(0x42D226, critter_adjust_poison_hack);
+	SafeWrite8(0x42D22C, 0xDA); // jmp 0x42D30A
 
 	// Adjust poison damage
 	SetDefaultAdjustPoisonHP(*(DWORD*)0x42D332);
-	fallout::MakeCall(0x42D331, critter_check_poison_hack);
+	MakeCall(0x42D331, critter_check_poison_hack);
 
 	// Fix/tweak for party control
-	fallout::MakeCall(0x42D31F, critter_check_poison_hack_fix, 1);
-	fallout::MakeCall(0x42D21C, critter_adjust_poison_hack_fix, 1);
-	fallout::SafeWrite8(0x42D223, 0xCB); // cmp eax, edx > cmp ebx, ecx
+	MakeCall(0x42D31F, critter_check_poison_hack_fix, 1);
+	MakeCall(0x42D21C, critter_adjust_poison_hack_fix, 1);
+	SafeWrite8(0x42D223, 0xCB); // cmp eax, edx > cmp ebx, ecx
 	// also rads
-	fallout::MakeCall(0x42D4FE, critter_check_rads_hack, 1);
-	fallout::SafeWrite8(0x42D505, 0xC8); // cmp eax, edx > cmp eax, ecx
+	MakeCall(0x42D4FE, critter_check_rads_hack, 1);
+	SafeWrite8(0x42D505, 0xC8); // cmp eax, edx > cmp eax, ecx
 }
 
 }

@@ -259,7 +259,7 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/sfall/FalloutEngine/Variables.cpp"
     "src/sfall/FalloutEngine/Variables.h"
     "src/sfall/FalloutEngine/Variables_def.h"
-    #[["src/sfall/Modules/HookScripts/CombatHs.cpp"
+    "src/sfall/Modules/HookScripts/CombatHs.cpp"
     "src/sfall/Modules/HookScripts/CombatHs.h"
     "src/sfall/Modules/HookScripts/Common.cpp"
     "src/sfall/Modules/HookScripts/Common.h"
@@ -274,11 +274,11 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/sfall/Modules/HookScripts/ObjectHs.cpp"
     "src/sfall/Modules/HookScripts/ObjectHs.h"
     "src/sfall/Modules/HookScripts/SoundHs.cpp"
-    "src/sfall/Modules/HookScripts/SoundHs.h"]]
+    "src/sfall/Modules/HookScripts/SoundHs.h"
     "src/sfall/Modules/CritterPoison.cpp"
     "src/sfall/Modules/CritterPoison.h"
-    #"src/sfall/Modules/HookScripts.cpp"
-    #"src/sfall/Modules/HookScripts.h"
+    "src/sfall/Modules/HookScripts.cpp"
+    "src/sfall/Modules/HookScripts.h"
     "src/sfall/Modules/Karma.cpp"
     "src/sfall/Modules/Karma.h"
     "src/sfall/Modules/LoadGameHook.cpp"
@@ -288,8 +288,8 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/sfall/Modules/Module.h"
     "src/sfall/Modules/PartyControl.cpp"
     "src/sfall/Modules/PartyControl.h"
-    #"src/sfall/Modules/ScriptExtender.cpp"
-    #"src/sfall/Modules/ScriptExtender.h"
+    "src/sfall/Modules/ScriptExtender.cpp"
+    "src/sfall/Modules/ScriptExtender.h"
     "src/sfall/CheckAddress.cpp"
     "src/sfall/CheckAddress.h"
     "src/sfall/Delegate.h"
@@ -299,8 +299,8 @@ target_sources(${EXECUTABLE_NAME} PUBLIC
     "src/sfall/Logging.h"
     "src/sfall/InputFuncs.cpp"
     "src/sfall/InputFuncs.h"
-    #"src/sfall/SafeWrite.cpp"
-    #"src/sfall/SafeWrite.h"
+    "src/sfall/SafeWrite.cpp"
+    "src/sfall/SafeWrite.h"
     "src/to_move_somewhere_else.cpp"
     "src/to_move_somewhere_else.h"
     "src/sfall_hook_scripts.cpp"
@@ -473,6 +473,3 @@ if(APPLE)
 
     include(CPack)
 endif()
-
-
-install(TARGETS ${EXECUTABLE_NAME} DESTINATION .)

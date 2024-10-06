@@ -2,25 +2,21 @@
   "version": 3,
   "configurePresets": [
     {
-        "name": "windows-base",
-        "description": "Target Windows with the Visual Studio development environment.",
-        "hidden": true,
-        "generator": "Ninja",
-        "binaryDir": "${sourceDir}/out/build/${presetName}",
-        "installDir": "C:/Users/pcarr/test/Fallout 2-CE",
-        "cacheVariables": {
-            "CMAKE_C_COMPILER": "cl.exe",
-            "CMAKE_CXX_COMPILER": "cl.exe"
-        },
-        "condition": {
-            "type": "equals",
-            "lhs": "${hostSystemName}",
-            "rhs": "Windows"
-        },
-        "environment": {
-            "CFLAGS": "/fsanitize=address",
-            "CXXFLAGS": "/fsanitize=address"
-        }
+      "name": "windows-base",
+      "description": "Target Windows with the Visual Studio development environment.",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_CXX_COMPILER": "cl.exe"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
     },
     {
       "name": "x64-debug",
@@ -68,8 +64,8 @@
             "strategy": "external"
         },
         "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" },
-        "binaryDir": "C:\\Fallout 2",
-        "installDir": "C:\\Fallout 2"
+        "binaryDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fallout 2",
+        "installDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fallout 2"
     }
   ]
 }

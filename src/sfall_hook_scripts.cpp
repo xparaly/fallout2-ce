@@ -233,7 +233,7 @@ void HookScripts::LoadHookScripts() {
 		HookScripts::LoadHookScript("hs_mouseclick", HOOK_MOUSECLICK);
 		HookScripts::LoadHookScript("hs_gamemodechange", HOOK_GAMEMODECHANGE);
 
-		hooksFilesLoaded = !fallout::alwaysFindScripts;
+		hooksFilesLoaded = !sfall::alwaysFindScripts;
 	}
 	sfall::dlogr("Finished loading hook scripts.", DL_HOOK|DL_INIT);
 }
