@@ -64,8 +64,7 @@
             "strategy": "external"
         },
         "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" },
-        "binaryDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fallout 2",
-        "installDir": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Fallout 2"
+        "installDir": "C:\\Users\\pcarr\\test\\Fallout 2-CE"
     }
   ]
 }

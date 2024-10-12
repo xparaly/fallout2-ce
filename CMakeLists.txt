@@ -473,3 +473,5 @@ if(APPLE)
 
     include(CPack)
 endif()
+
+install(TARGETS ${EXECUTABLE_NAME} DESTINATION "C:\\Users\\pcarr\\test\\Fallout 2-CE" )

@@ -741,17 +741,30 @@ static void op_explosions_metarule(Program* program)
 static void op_register_hook(Program* program)
 {
     bool specReg = false;
-    //	switch (ctx.opcode()) {
-    //	case 0x27d:
-    //		specReg = true;
-    //	case 0x262:
-
-    int id = programStackPopInteger(program);
-    int proc = programStackPopInteger(program);
+    int proc = -1;                              // if register_hook -> proc = -1.  if register_hook_proc or register_hook_proc_spec -> id AND proc argument.
+    int id = programStackPopInteger(program);                              
     fallout::HookScripts::RegisterHook(program, id, proc, specReg);
 }
 
+// used for register_hook_proc
+static void op_register_hook_proc(Program* program)
+{
+    bool specReg = false;
+    int proc = programStackPopInteger(program);  // if register_hook -> proc = -1.  if register_hook_proc or register_hook_proc_spec -> id AND proc argument.
+    int id = programStackPopInteger(program);
+    if (proc < 0 || (specReg && proc == 0)) return;
+    fallout::HookScripts::RegisterHook(program, id, proc, specReg);
+}
 
+// used for register_hook_proc_spec
+static void op_register_hook_proc_spec(Program* program)
+{
+    bool specReg = true;
+    int proc = programStackPopInteger(program);   // if register_hook -> proc = -1.  if register_hook_proc or register_hook_proc_spec -> id AND proc argument.
+    int id = programStackPopInteger(program);
+    if (proc < 0 || (specReg && proc == 0)) return;
+    fallout::HookScripts::RegisterHook(program, id, proc, specReg);
+}
 
 // pow (^)
 static void op_power(Program* program)
@@ -1089,6 +1102,7 @@ void sfallOpcodesInit()
     interpreterRegisterOpcode(0x8204, op_get_proto_data);
     interpreterRegisterOpcode(0x8205, op_set_proto_data);
     interpreterRegisterOpcode(0x8206, op_set_self);
+    interpreterRegisterOpcode(0x8207, op_register_hook);
     interpreterRegisterOpcode(0x820D, opListBegin);
     interpreterRegisterOpcode(0x820E, opListNext);
     interpreterRegisterOpcode(0x820F, opListEnd);
@@ -1128,7 +1142,7 @@ void sfallOpcodesInit()
     interpreterRegisterOpcode(0x8256, opGetArrayKey);
     interpreterRegisterOpcode(0x8257, opStackArray);
     interpreterRegisterOpcode(0x8261, op_explosions_metarule);
-    interpreterRegisterOpcode(0x8262, op_register_hook);
+    interpreterRegisterOpcode(0x8262, op_register_hook_proc);
     interpreterRegisterOpcode(0x8263, op_power);
     interpreterRegisterOpcode(0x8267, opRound);
     interpreterRegisterOpcode(0x826B, opGetMessage);
@@ -1143,7 +1157,7 @@ void sfallOpcodesInit()
     interpreterRegisterOpcode(0x827A, op_sfall_func4);
     interpreterRegisterOpcode(0x827B, op_sfall_func5);
     interpreterRegisterOpcode(0x827C, op_sfall_func6);
-    interpreterRegisterOpcode(0x827D, op_register_hook);
+    interpreterRegisterOpcode(0x827D, op_register_hook_proc_spec);
     interpreterRegisterOpcode(0x827F, op_div);
 }
 

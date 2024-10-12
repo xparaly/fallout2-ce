@@ -759,11 +759,11 @@ void Inject_AmmoCostHook() {
 }
 
 void Inject_CombatTurnHook() {
-	HookCall(0x422354, CombatTurnHook_AddNoncoms);
+	HookCall(0x422354, CombatTurnHook_AddNoncoms); // 0x4222A8 _combat_add_noncoms()
 	HookCalls(CombatTurnHook, { 0x422D87, 0x422E20 });
 	HookCalls(CombatTurnHook_End, {
-		0x422E85, // combat_
-		0x422196  // combat_over_from_load_
+		0x422E85, // combat_ //0x422D2C void _combat(CombatStartData* csd)
+		0x422196  // combat_over_from_load_ //0x422194 void _combat_over_from_load()
 	});
 
 	HookCall(0x422E4D, combat_hook_fix_load);
